@@ -1,0 +1,283 @@
+/* ---------- CONTINUUM ACADEMY — ONE DISCIPLINE ---------- */
+/* Tokens, artwork, duration badge, modal and bottom nav come from home.css.
+   This file owns the discipline hero (badge, name, goal, blurb, counts, CTA)
+   and the two-column video grid, on the same scale as Explore and My Library. */
+
+.discipline-main {
+  padding-top: 10px;
+  gap: 26px;
+}
+
+/* ---------- BACK TO THE CATALOGUE ---------- */
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  gap: 8px;
+  padding: 2px 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-sub);
+  text-decoration: none;
+}
+
+.back-link svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.back-link:active {
+  color: var(--accent);
+}
+
+/* ---------- DISCIPLINE HERO ---------- */
+.disc-hero {
+  padding: 20px;
+  border-radius: 20px;
+  border: 1px solid rgba(29, 195, 221, 0.14);
+  background:
+    radial-gradient(circle at 8% 0%, rgba(29, 195, 221, 0.12) 0%, transparent 55%),
+    linear-gradient(160deg, rgba(21, 31, 42, 0.97) 0%, rgba(14, 22, 30, 0.99) 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+/* The track stamp: outlined, so it reads as a label rather than a button */
+.disc-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 32px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(29, 195, 221, 0.42);
+  background: rgba(29, 195, 221, 0.1);
+  color: var(--accent);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.9px;
+  text-transform: uppercase;
+}
+
+.disc-badge svg {
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+}
+
+.disc-name {
+  margin-top: 18px;
+  font-size: 32px;
+  line-height: 1.08;
+  font-weight: 900;
+  letter-spacing: -1px;
+  color: var(--text);
+}
+
+.disc-goal {
+  margin-top: 12px;
+  font-size: 16px;
+  line-height: 1.3;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.disc-blurb {
+  margin-top: 10px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-sub);
+}
+
+.disc-stats {
+  margin-top: 18px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+}
+
+.disc-stat {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-sub);
+}
+
+.disc-stat svg {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+  color: var(--text-muted);
+}
+
+.disc-stat b {
+  font-weight: 800;
+  color: var(--text);
+}
+
+/* Full width on a phone: the sheet's right-aligned CTA has nowhere to sit */
+.disc-start {
+  margin-top: 18px;
+  width: 100%;
+  height: 52px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  border: 0;
+  border-radius: 14px;
+  background: var(--accent);
+  color: var(--ink);
+  font-family: var(--font-family);
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: -0.1px;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.disc-start:active {
+  transform: scale(0.985);
+  background: var(--accent-active);
+}
+
+.disc-start svg {
+  width: 13px;
+  height: 13px;
+  flex-shrink: 0;
+}
+
+/* ---------- VIDEO LIST ---------- */
+.disc-videos-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 16px;
+}
+
+.disc-videos-title {
+  font-size: 17px;
+  line-height: 1.25;
+  font-weight: 800;
+  letter-spacing: -0.3px;
+  color: var(--text);
+}
+
+.disc-videos-count {
+  flex-shrink: 0;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.disc-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px 12px;
+}
+
+.disc-card {
+  min-width: 0;
+  cursor: pointer;
+  transition: transform 0.18s ease;
+}
+
+.disc-card:active {
+  transform: scale(0.97);
+}
+
+.disc-thumb {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid rgba(28, 40, 51, 0.85);
+}
+
+/* Miniature poster: the artwork shrinks, its type shrinks with it */
+.disc-thumb .thumb-fallback {
+  padding: 9px 10px;
+}
+
+.disc-thumb .thumb-top-logos {
+  font-size: 5.5px;
+}
+
+.disc-thumb .speaker-avatar-wrap {
+  display: none;
+}
+
+.disc-thumb .thumb-headline {
+  max-width: 84%;
+  font-size: 9.5px;
+  line-height: 1.25;
+}
+
+.disc-thumb .thumb-speaker-info b {
+  font-size: 7.5px;
+}
+
+.disc-thumb .thumb-speaker-info span {
+  font-size: 6px;
+}
+
+.disc-card-tag {
+  margin-top: 8px;
+  font-size: 8.5px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.disc-card-title {
+  margin-top: 3px;
+  font-size: 13px;
+  line-height: 1.3;
+  font-weight: 700;
+  color: var(--text);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.disc-card-speaker {
+  margin-top: 3px;
+  font-size: 11px;
+  line-height: 1.3;
+  font-weight: 500;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ---------- UNKNOWN DISCIPLINE / NOSCRIPT ---------- */
+.disc-missing {
+  padding: 34px 16px;
+  border: 1px dashed var(--line-strong);
+  border-radius: 14px;
+  text-align: center;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+.disc-missing a {
+  display: inline-block;
+  margin-top: 14px;
+  color: var(--accent);
+  font-weight: 700;
+  text-decoration: none;
+}

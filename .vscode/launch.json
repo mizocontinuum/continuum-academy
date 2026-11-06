@@ -1,0 +1,34 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            // Every configuration starts .vscode/serve.py first (task "serve:dev"),
+            // then opens the page once the server reports it is ready.
+            "type": "chrome",
+            "request": "launch",
+            "name": "Login Page (localhost:8080)",
+            "url": "http://localhost:8080/login/",
+            "webRoot": "${workspaceFolder}",
+            "preLaunchTask": "serve:dev"
+        },
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "Home Page (localhost:8080)",
+            "url": "http://localhost:8080/home/",
+            "webRoot": "${workspaceFolder}",
+            "preLaunchTask": "serve:dev"
+        },
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "Clips Trailer (localhost:8080)",
+            "url": "http://localhost:8080/clips/",
+            "webRoot": "${workspaceFolder}",
+            "preLaunchTask": "serve:dev"
+        }
+    ]
+}

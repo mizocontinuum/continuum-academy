@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#000000">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Continuum Academy - Reset Password</title>
+
+  <link rel="manifest" href="../manifest.webmanifest">
+  <link rel="apple-touch-icon" href="../assets/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="../assets/images/icon-192.png">
+
+  <link rel="stylesheet" href="../assets/css/login.css">
+  <link rel="stylesheet" href="../assets/css/auth.css">
+
+  <script src="../assets/js/config.js"></script>
+  <script src="../assets/js/auth.js"></script>
+</head>
+
+<body>
+  <div class="toast-msg" id="forgotToast" role="status"></div>
+
+  <div class="login-container">
+
+    <header class="brand-header">
+      <img src="../assets/images/logo.png" alt="Continuum Academy Inc." class="brand-logo-img">
+
+      <div class="brand-divider"></div>
+
+      <div class="powered-badge">
+        <span class="powered-text">POWERED BY</span>
+        <img src="../assets/images/mansmith.png" alt="Mansmith and Fielders, Inc." class="mansmith-logo-img">
+      </div>
+    </header>
+
+    <main class="login-card">
+      <a class="back-link" href="../login/">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+        Back to sign in
+      </a>
+
+      <h1 class="headline">Forgot password</h1>
+      <p class="subheadline" id="forgotSubhead">Enter the email on your account and we will send a reset link</p>
+
+      <form class="login-form" id="forgotForm" autocomplete="on">
+
+        <div class="form-group">
+          <label class="form-label" for="email">EMAIL ADDRESS</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            class="input-box"
+            placeholder="name@company.com"
+            required
+            autocomplete="email"
+          >
+        </div>
+
+        <p class="form-error" id="forgotError" role="alert"></p>
+
+        <button type="submit" class="btn-submit" id="forgotSubmit">
+          <span>Send Reset Link</span>
+          <span class="arrow-icon">➔</span>
+        </button>
+
+      </form>
+
+      <!-- Shown after a successful request, replaces the form -->
+      <div class="auth-note" id="forgotSent" hidden>
+        <strong>Check your inbox.</strong> If an account exists for that address, a reset
+        link is on its way. The link expires in one hour.
+      </div>
+
+      <p class="auth-alt">
+        Remembered it? <a href="../login/">Sign in</a>
+      </p>
+
+      <p class="auth-note" data-demo-chip>
+        <strong>Demo session.</strong> No email is sent in this build. The button
+        opens the reset screen directly.
+      </p>
+
+      <p class="auth-alt" id="demoResetWrap" hidden>
+        <a href="../reset-password/" id="demoResetLink">Continue to reset (demo)</a>
+      </p>
+    </main>
+
+    <footer class="login-footer">
+      <div class="footer-row">
+        <a href="#" class="footer-link">Terms &amp; Conditions</a>
+        <span class="dot">•</span>
+        <a href="#" class="footer-link">Privacy Policy</a>
+        <span class="dot">•</span>
+        <a href="../login/" class="footer-link">Contact</a>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="../assets/js/forgot-password.js"></script>
+</body>
+</html>

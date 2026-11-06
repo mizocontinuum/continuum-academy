@@ -1,0 +1,388 @@
+/* ---------- LOGIN PAGE ---------- */
+/* SIMPLE PALETTE — same scale as assets/css/home.css */
+:root {
+  /* Surfaces */
+  --bg-page: #0b1117;         /* soft slate, not pure black */
+  --surface: #151f2a;         /* cards, sheets */
+  --surface-raised: #1c2833;  /* buttons, badges, chips */
+  --line: rgba(255, 255, 255, 0.08);
+  --line-strong: rgba(255, 255, 255, 0.14);
+
+  /* One accent */
+  --accent: #1dc3dd;
+  --accent-hover: #35d2ea;
+  --accent-active: #14a7bd;
+  --accent-glow: rgba(29, 195, 221, 0.18);
+  --ink: #000000;             /* text that sits on the accent */
+
+  /* Text */
+  --text: #ffffff;
+  --text-sub: #a7b6c2;
+  --text-muted: #8b9aa7;
+
+  /* Page depth: one simple vertical shift behind the card */
+  --bg-page-gradient: linear-gradient(180deg, #111a23 0%, #0b1117 45%, #080d12 100%);
+
+  /* Component surfaces */
+  --card-bg: var(--surface);
+  --btn-accent-bg: var(--accent);
+  --btn-secondary-bg: var(--surface-raised);
+  --btn-secondary-border: var(--line-strong);
+  /* Brand mark height. Keep in sync with --logo-height in assets/css/home.css */
+  --logo-height: 40px;
+  --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  width: 100%;
+  min-height: 100%;
+  min-height: 100dvh;
+  background-color: var(--bg-page);
+  background-image: var(--bg-page-gradient);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  color: var(--text);
+  font-family: var(--font-family);
+  display: flex;
+  justify-content: center;
+}
+
+.login-container {
+  width: 100%;
+  max-width: 420px;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: calc(env(safe-area-inset-top, 20px) + 24px) 28px calc(env(safe-area-inset-bottom, 20px) + 24px);
+}
+
+/* ---------- BRAND HEADER ---------- */
+.brand-header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 14px;
+  padding-top: 6px;
+  width: 100%;
+}
+
+.brand-logo-img {
+  height: var(--logo-height);
+  max-width: 190px;
+  width: auto;
+  object-fit: contain;
+  display: block;
+}
+
+.brand-divider {
+  width: 1.5px;
+  height: 28px;
+  background: rgba(255, 255, 255, 0.12);
+  flex-shrink: 0;
+}
+
+.powered-badge {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  background: rgba(11, 17, 23, 0.6);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 6px 14px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+.powered-text {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.mansmith-logo-img {
+  height: 24px;
+  width: auto;
+  object-fit: contain;
+  display: block;
+}
+
+/* ---------- LOGIN CARD (trial-card language from Home) ---------- */
+.login-card {
+  margin: 30px 0 20px;
+  display: flex;
+  flex-direction: column;
+  background: var(--card-bg);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 36px 24px 30px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.login-card:hover {
+  border-color: var(--line-strong);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5);
+}
+
+.headline {
+  font-size: 26px;
+  font-weight: 900;
+  text-align: center;
+  letter-spacing: -0.3px;
+  margin-bottom: 8px;
+  color: var(--text);
+}
+
+.subheadline {
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--text-muted);
+  text-align: center;
+  margin-bottom: 30px;
+  padding: 0 10px;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.form-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  color: var(--text-sub);
+}
+
+.forgot-link {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--accent);
+  text-decoration: none;
+  position: relative;
+  transition: color 0.2s ease, text-shadow 0.2s ease;
+}
+
+.forgot-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 0%;
+  height: 1.5px;
+  background-color: var(--accent);
+  transition: width 0.25s ease;
+}
+
+.forgot-link:hover {
+  color: var(--accent-hover);
+  text-shadow: 0 0 10px var(--accent-glow);
+}
+
+.forgot-link:hover::after {
+  width: 100%;
+  background-color: var(--accent-hover);
+}
+
+.input-box {
+  width: 100%;
+  height: 48px;
+  background: var(--btn-secondary-bg);
+  border: 1.5px solid var(--btn-secondary-border);
+  border-radius: 10px;
+  padding: 0 16px;
+  color: var(--text);
+  font-size: 14px;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
+}
+
+.input-box::placeholder {
+  color: #8b9aa7;
+  font-size: 13.5px;
+  transition: color 0.2s ease;
+}
+
+.input-box:hover {
+  border-color: rgba(29, 195, 221, 0.32);
+  background: rgba(28, 40, 51, 0.6);
+}
+
+.input-box:hover::placeholder {
+  color: var(--text-muted);
+}
+
+.input-box:focus {
+  border-color: var(--accent);
+  background: var(--surface);
+  box-shadow: 0 0 0 3px rgba(29, 195, 221, 0.32), 0 0 14px var(--accent-glow);
+}
+
+/* ---------- SUBMIT BUTTON (matches Continuum Brand Accent) ---------- */
+.btn-submit {
+  width: 100%;
+  height: 50px;
+  margin-top: 8px;
+  background: var(--btn-accent-bg);
+  border: none;
+  border-radius: 10px;
+  color: var(--ink);
+  font-size: 15px;
+  font-weight: 900;
+  font-family: inherit;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 4px 16px var(--accent-glow);
+  transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+}
+
+.btn-submit:hover {
+  background: linear-gradient(135deg, var(--accent-hover) 0%, #1dc3dd 100%);
+  color: var(--ink);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 22px rgba(29, 195, 221, 0.32);
+}
+
+.btn-submit:active {
+  background: var(--accent-active);
+  color: var(--ink);
+  transform: translateY(0) scale(0.985);
+  box-shadow: 0 3px 12px rgba(29, 195, 221, 0.32);
+}
+
+.arrow-icon {
+  font-size: 17px;
+  display: inline-block;
+  transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.btn-submit:hover .arrow-icon {
+  transform: translateX(5px);
+}
+
+/* ---------- SIGNUP LINK ---------- */
+.signup-hint {
+  text-align: center;
+  margin-top: 18px;
+  font-size: 12.5px;
+  color: var(--text-muted);
+}
+
+.signup-link {
+  color: var(--accent);
+  font-weight: 700;
+  text-decoration: none;
+  margin-left: 2px;
+  position: relative;
+  display: inline-block;
+  transition: color 0.2s ease, text-shadow 0.2s ease;
+}
+
+.signup-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  width: 0%;
+  height: 1.5px;
+  background-color: var(--accent);
+  transition: width 0.25s ease;
+}
+
+.signup-link:hover {
+  color: var(--accent-hover);
+  text-shadow: 0 0 10px var(--accent-glow);
+}
+
+.signup-link:hover::after {
+  width: 100%;
+  background-color: var(--accent);
+}
+
+/* ---------- FOOTER NAVIGATION & LEGAL ---------- */
+.login-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding-top: 30px;
+  font-size: 11px;
+}
+
+.footer-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.footer-link {
+  color: var(--text-muted);
+  text-decoration: none;
+  padding: 2px 4px;
+  border-radius: 4px;
+  transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.footer-link:hover {
+  color: var(--text);
+  background-color: rgba(255, 255, 255, 0.06);
+}
+
+.dot {
+  color: #2a3540;
+  font-size: 9px;
+}
+
+/* Toast message on login action — matches Home */
+.toast-msg {
+  position: fixed;
+  top: calc(env(safe-area-inset-top, 20px) + 16px);
+  left: 50%;
+  transform: translateX(-50%) translateY(-100px);
+  background: var(--surface);
+  border: 1px solid var(--accent);
+  color: var(--text);
+  padding: 10px 18px;
+  border-radius: 99px;
+  font-size: 12.5px;
+  font-weight: 600;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  transition: transform 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+  z-index: 100;
+  pointer-events: none;
+}
+
+.toast-msg.show {
+  transform: translateX(-50%) translateY(0);
+}

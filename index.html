@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0b1117">
+  <title>Continuum Academy</title>
+
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="assets/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="assets/images/icon-192.png">
+
+  <!-- Entry point: signed-in members land on Home, everyone else on Login.
+       The meta refresh is the no-JavaScript fallback and always points at Login. -->
+  <link rel="canonical" href="login/">
+  <meta http-equiv="refresh" content="0; url=login/">
+
+  <!-- Root sits one level above the pages, so the paths are overridden here -->
+  <script>window.CONTINUUM_CONFIG = { loginPath: 'login/', homePath: 'home/', profilePath: 'profile/' };</script>
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script>
+    window.location.replace(ContinuumAuth.getSession() ? 'home/' : 'login/');
+  </script>
+</head>
+
+<body>
+  <p>Redirecting to <a href="login/">the login page</a>&hellip;</p>
+</body>
+</html>

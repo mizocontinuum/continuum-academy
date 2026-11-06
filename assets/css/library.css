@@ -1,0 +1,465 @@
+/* ---------- CONTINUUM ACADEMY — MY LIBRARY ---------- */
+/* Tokens, masthead, artwork, modal and bottom nav come from home.css. This
+   file owns the dashboard only: the browse shortcut, the two stat cards, the
+   segmented tabs, the filter tool row and the progress rows. */
+
+.library-main {
+  padding-top: 6px;
+}
+
+/* ---------- BROWSE SHORTCUT ---------- */
+/* Sized to its label, like the sheet: a shortcut, not the page's main action */
+.browse-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  align-self: flex-start;
+  height: 54px;
+  padding: 0 16px;
+  border-radius: 14px;
+  border: 1px solid var(--line-strong);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: -0.1px;
+  text-decoration: none;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+}
+
+.browse-btn:active {
+  transform: scale(0.98);
+  background: var(--surface-raised);
+  border-color: var(--accent-glow);
+}
+
+.browse-icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  color: var(--accent);
+}
+
+.browse-chevron {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  margin-left: 2px;
+  color: var(--text-sub);
+}
+
+/* ---------- STAT CARDS ---------- */
+/* Two equal columns: the numbers are the point, so they get the weight */
+.stat-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.stat-card {
+  padding: 12px 12px 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(29, 195, 221, 0.26);
+  background:
+    radial-gradient(circle at 88% 10%, rgba(29, 195, 221, 0.1) 0%, transparent 58%),
+    var(--surface);
+}
+
+.stat-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+/* Narrow measure so "Total Watch Time" breaks in two while "In-Progress"
+   still holds one line, exactly like the sheet */
+.stat-label {
+  max-width: 88px;
+  font-size: 10px;
+  line-height: 1.4;
+  font-weight: 800;
+  letter-spacing: 0.7px;
+  text-transform: uppercase;
+  color: var(--text-sub);
+}
+
+.stat-icon {
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(29, 195, 221, 0.12);
+  color: var(--accent);
+}
+
+.stat-icon svg {
+  width: 13px;
+  height: 13px;
+}
+
+.stat-value {
+  margin-top: 14px;
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.stat-value b {
+  font-size: 27px;
+  line-height: 1;
+  font-weight: 900;
+  letter-spacing: -0.8px;
+  color: var(--text);
+}
+
+.stat-value span {
+  font-size: 11px;
+  line-height: 1.2;
+  font-weight: 600;
+  color: var(--text-sub);
+}
+
+/* ---------- SEGMENTED TABS ---------- */
+/* Bleeds to the screen edge so the next filter is always half visible */
+.lib-tabs {
+  display: flex;
+  gap: 10px;
+  margin: 0 -16px;
+  padding: 2px 16px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+}
+
+.lib-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.lib-tab {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 46px;
+  padding: 0 14px 0 16px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--text);
+  font-family: var(--font-family);
+  font-size: 13.5px;
+  font-weight: 700;
+  letter-spacing: -0.1px;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+/* The mark that opens each view, from the tab's icon key */
+.lib-tab svg {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+.lib-tab:active {
+  transform: scale(0.97);
+}
+
+.lib-tab[aria-selected="true"] {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--ink);
+}
+
+.lib-tab .tab-count {
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.09);
+  font-size: 11.5px;
+  font-weight: 800;
+}
+
+.lib-tab[aria-selected="true"] .tab-count {
+  background: rgba(0, 0, 0, 0.18);
+}
+
+/* ---------- TOOL ROW: SEARCH + DISCIPLINE FILTER ---------- */
+.lib-tools {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.lib-search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 46px;
+  padding: 0 14px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+}
+
+.lib-search svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  color: var(--text-muted);
+}
+
+.lib-search input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: var(--text);
+  font-family: var(--font-family);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.lib-search input::placeholder {
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+/* The native clear affordance is invisible on this dark sheet */
+.lib-search input::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.lib-filter {
+  position: relative;
+  align-self: flex-start;
+  width: min(296px, 100%);
+}
+
+.lib-filter select {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 44px;
+  padding: 0 40px 0 14px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--text);
+  font-family: var(--font-family);
+  font-size: 13.5px;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+.lib-filter .filter-chevron {
+  position: absolute;
+  top: 50%;
+  right: 14px;
+  width: 15px;
+  height: 15px;
+  transform: translateY(-50%);
+  color: var(--text-sub);
+  pointer-events: none;
+}
+
+/* ---------- PROGRESS ROWS ---------- */
+.library-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.library-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  cursor: pointer;
+  transition: transform 0.18s ease;
+}
+
+.library-row:active {
+  transform: scale(0.985);
+}
+
+.lib-thumb {
+  position: relative;
+  width: 116px;
+  flex-shrink: 0;
+  aspect-ratio: 16 / 9;
+  border-radius: 9px;
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid rgba(28, 40, 51, 0.85);
+}
+
+/* Miniature poster: the artwork shrinks, its type shrinks with it */
+.lib-thumb .thumb-fallback {
+  padding: 8px 9px;
+}
+
+.lib-thumb .thumb-top-logos,
+.lib-thumb .speaker-avatar-wrap {
+  display: none;
+}
+
+.lib-thumb .thumb-headline {
+  font-size: 8.5px;
+  line-height: 1.25;
+  margin: 2px 0;
+}
+
+.lib-thumb .thumb-speaker-info b {
+  font-size: 7px;
+}
+
+.lib-thumb .thumb-speaker-info span {
+  font-size: 6px;
+}
+
+/* Resume line: reads as the bottom edge of the artwork, not a separate bar */
+.lib-progress {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  z-index: 3;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.lib-progress i {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+}
+
+.lib-done {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  z-index: 3;
+  width: 18px;
+  height: 18px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--ink);
+}
+
+.lib-done svg {
+  width: 10px;
+  height: 10px;
+}
+
+.lib-body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.lib-title {
+  font-size: 13px;
+  line-height: 1.35;
+  font-weight: 700;
+  color: var(--text);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* The discipline a row belongs to: enough size to read at a glance, and a
+   letter-spacing loose enough that the longest track fits without clipping */
+.lib-meta {
+  font-size: 10px;
+  line-height: 1.35;
+  font-weight: 800;
+  letter-spacing: 0.55px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.lib-status {
+  font-size: 11.5px;
+  line-height: 1.3;
+  font-weight: 600;
+  color: var(--text-sub);
+}
+
+/* Only what is still playing earns the accent */
+.lib-status.ongoing {
+  color: var(--accent);
+}
+
+.lib-play {
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
+}
+
+.lib-play svg {
+  width: 11px;
+  height: 11px;
+  margin-left: 1px;
+}
+
+.library-row:active .lib-play {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+/* ---------- EMPTY STATE ---------- */
+.lib-empty {
+  padding: 34px 16px;
+  border: 1px dashed var(--line-strong);
+  border-radius: 14px;
+  text-align: center;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+.lib-empty[hidden],
+.lib-empty .lib-reset[hidden] {
+  display: none;
+}
+
+.lib-reset {
+  margin-top: 14px;
+  padding: 0 16px;
+  height: 36px;
+  border-radius: 999px;
+  border: 1px solid var(--line-strong);
+  background: var(--surface-raised);
+  color: var(--text);
+  font-family: var(--font-family);
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+}

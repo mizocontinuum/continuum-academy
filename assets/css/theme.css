@@ -1,0 +1,69 @@
+/* ---------- CONTINUUM ACADEMY — LIGHT THEME ---------- */
+/* Loaded after home.css. The whole app paints from the palette variables
+   declared in home.css :root, so switching <html data-theme="light">
+   re-skins every surface, text level and divider in one place.
+   The user-menu panel and video sheets stay dark navy by design. */
+
+html[data-theme="light"] {
+  /* Surfaces */
+  --bg-page: #f2f5f9;
+  --surface: #ffffff;
+  --surface-raised: #e7edf4;
+  --line: rgba(13, 20, 31, 0.10);
+  --line-strong: rgba(13, 20, 31, 0.18);
+
+  /* Text */
+  --text: #101820;
+  --text-sub: #46545f;
+  --text-muted: #66747f;
+
+  /* Depth & chrome */
+  --bg-page-gradient: linear-gradient(180deg, #f7fafc 0%, #eef3f8 45%, #e7eef5 100%);
+  --nav-bg: rgba(247, 250, 252, 0.9);
+
+  /* Accent stays the same cyan, but text on it turns dark-on-light safe */
+  --accent-glow: rgba(29, 195, 221, 0.22);
+}
+
+/* Anything that hardcoded white text against the dark page reads through
+   the variables above; these are the few surfaces that need a direct fix. */
+html[data-theme="light"] body {
+  color: var(--text);
+}
+
+html[data-theme="light"] .top-bar,
+html[data-theme="light"] .bottom-nav-container {
+  /* Frosted chrome picks up the light glass tone instead of dark */
+  border-color: var(--line);
+}
+
+html[data-theme="light"] .icon-btn svg {
+  stroke: var(--text);
+}
+
+html[data-theme="light"] .floating-nav {
+  background: var(--surface);
+  border-color: var(--line-strong);
+  box-shadow: 0 8px 24px rgba(13, 20, 31, 0.12);
+}
+
+html[data-theme="light"] .nav-tab,
+html[data-theme="light"] .nav-tab .nav-label {
+  color: var(--text-muted);
+}
+
+html[data-theme="light"] .nav-tab.active {
+  color: var(--accent-active);
+}
+
+html[data-theme="light"] .toast-msg {
+  color: var(--text);
+}
+
+html[data-theme="light"] .card-caption {
+  color: var(--text);
+}
+
+html[data-theme="light"] .section-subtitle {
+  color: var(--text-sub);
+}

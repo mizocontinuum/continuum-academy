@@ -1,0 +1,24 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Editor / OS scratch
+*.swp
+*.tmp
+Thumbs.db
+
+# Dependencies (if a build step is ever introduced)
+node_modules/
+
+# Environment / secrets — never commit real keys
+.env
+.env.*
+*.local
+
+# Local backups (dated copies live here; not part of the shipped app)
+_backup/
+
+# Large video assets — excluded to respect GitHub (100 MB) and
+# Netlify/Cloudflare Pages (25 MB) file-size limits
+assets/videos/*.mp4

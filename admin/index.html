@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en" data-requires-auth>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0b1117">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Continuum Academy - Admin (Beta)</title>
+
+  <!-- Shared artwork + modal shell styles, then the admin form styles -->
+  <link rel="stylesheet" href="../assets/css/home.css">
+  <link rel="stylesheet" href="../assets/css/admin.css">
+  <!-- Installable on the home screen -->
+  <link rel="manifest" href="../manifest.webmanifest">
+  <link rel="apple-touch-icon" href="../assets/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="../assets/images/icon-192.png">
+
+  <!-- Session guard: signed-out visitors are redirected before first paint -->
+  <script src="../assets/js/config.js"></script>
+  <script src="../assets/js/auth.js"></script>
+</head>
+
+<body>
+
+  <header class="top-bar">
+    <div class="top-bar-left">
+      <a class="icon-btn back-btn" href="../home/" aria-label="Back to Home">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </a>
+      <span class="admin-title">Admin <em>beta</em></span>
+    </div>
+    <div class="top-bar-right">
+      <a class="icon-btn" href="../library/" aria-label="My Library">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+      </a>
+      <div class="avatar-btn" id="profileBtn" title="Profile"><span data-session-initial>M</span></div>
+    </div>
+  </header>
+
+  <main class="admin-main">
+
+    <!-- ---------- DISCIPLINES ---------- -->
+    <section class="admin-section">
+      <h2 class="admin-heading">Disciplines</h2>
+      <p class="admin-hint">Sections members browse on Explore, Disciplines and Home.</p>
+
+      <form class="admin-form" id="groupForm" autocomplete="off">
+        <div class="field-row">
+          <label class="field">
+            <span>Name *</span>
+            <input type="text" id="groupTitle" placeholder="e.g. Marketing Discipline" required>
+          </label>
+        </div>
+        <div class="field-row">
+          <label class="field">
+            <span>Goal</span>
+            <input type="text" id="groupGoal" placeholder="e.g. Build demand">
+          </label>
+          <label class="field">
+            <span>Blurb</span>
+            <input type="text" id="groupBlurb" placeholder="One sentence under the heading">
+          </label>
+        </div>
+        <button type="submit" class="admin-btn primary">Add Discipline</button>
+      </form>
+
+      <ul class="group-list" id="groupList"><!-- rendered by admin.js --></ul>
+    </section>
+
+    <!-- ---------- VIDEOS FOR THE SELECTED DISCIPLINE ---------- -->
+    <section class="admin-section" id="videoSection" hidden>
+      <h2 class="admin-heading">Videos — <span id="videoSectionGroup" class="admin-group-name"></span></h2>
+      <p class="admin-hint">Metadata renders the card; the uploaded file makes it playable.</p>
+
+      <form class="admin-form" id="videoForm" autocomplete="off">
+        <div class="field-row">
+          <label class="field grow">
+            <span>Title *</span>
+            <input type="text" id="videoTitle" placeholder="Full masterclass title" required>
+          </label>
+        </div>
+        <div class="field-row">
+          <label class="field">
+            <span>Highlight phrase</span>
+            <input type="text" id="videoHighlight" placeholder="Words painted in accent on the card">
+          </label>
+          <label class="field">
+            <span>Minutes</span>
+            <input type="number" id="videoMinutes" min="1" placeholder="e.g. 42">
+          </label>
+        </div>
+        <div class="field-row">
+          <label class="field">
+            <span>Speaker</span>
+            <input type="text" id="videoSpeaker" placeholder="e.g. Josiah Go">
+          </label>
+          <label class="field">
+            <span>Role / company</span>
+            <input type="text" id="videoRole" placeholder="e.g. Chairman, Mansmith and Fielders">
+          </label>
+        </div>
+        <div class="field-row">
+          <label class="field">
+            <span>Tag</span>
+            <input type="text" id="videoTag" placeholder="Defaults to the discipline name">
+          </label>
+          <label class="field">
+            <span>Avatar emoji</span>
+            <input type="text" id="videoAvatar" placeholder="🎬" maxlength="4">
+          </label>
+          <label class="field">
+            <span>Artwork</span>
+            <select id="videoArt">
+              <option value="bg-slate-a">Slate A</option>
+              <option value="bg-slate-b">Slate B</option>
+              <option value="bg-slate-c">Slate C</option>
+              <option value="bg-josiah">Josiah</option>
+              <option value="bg-chiqui">Chiqui</option>
+              <option value="bg-donald">Donald</option>
+              <option value="bg-jv">JV</option>
+              <option value="bg-bea">Bea</option>
+              <option value="bg-emilio">Emilio</option>
+            </select>
+          </label>
+        </div>
+        <div class="field-row">
+          <label class="field grow">
+            <span>Video file (.mp4 / .webm)</span>
+            <input type="file" id="videoFile" accept="video/mp4,video/webm">
+          </label>
+        </div>
+        <button type="submit" class="admin-btn primary">Add Video</button>
+      </form>
+
+      <ul class="video-list" id="videoList"><!-- rendered by admin.js --></ul>
+    </section>
+
+    <!-- ---------- BETA NOTE ---------- -->
+    <section class="admin-section admin-note">
+      <h2 class="admin-heading">About this beta</h2>
+      <p>Content and uploads live <b>on this device only</b> (localStorage +
+         IndexedDB). Clearing site data or using another phone won't show it —
+         the Supabase + streaming cutover makes it real for every member.</p>
+      <button type="button" class="admin-btn danger ghost" id="wipeContent">Wipe all content</button>
+    </section>
+
+  </main>
+
+  <div class="toast-msg" id="pageToast"></div>
+
+  <script src="../assets/js/content.js"></script>
+  <script src="../assets/js/admin.js"></script>
+</body>
+</html>

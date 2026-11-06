@@ -1,0 +1,307 @@
+/* ---------- AUTH & ACCOUNT SCREENS ---------- */
+/* Shared by signup, forgot-password, reset-password and profile.
+   Load after assets/css/login.css: the palette and the card language come
+   from there, this file only adds the pieces login did not need. */
+
+/* ---------- INLINE VALIDATION ---------- */
+/* One line under the form. Empty by default so the card has no dead space. */
+.form-error {
+  display: none;
+  font-size: 12px;
+  line-height: 1.45;
+  color: #ff8b8b;
+  background: rgba(255, 96, 96, 0.09);
+  border: 1px solid rgba(255, 96, 96, 0.28);
+  border-radius: 10px;
+  padding: 10px 12px;
+  margin: 0;
+}
+
+.form-error.show {
+  display: block;
+}
+
+.input-box.invalid {
+  border-color: rgba(255, 96, 96, 0.55);
+  box-shadow: 0 0 0 3px rgba(255, 96, 96, 0.1);
+}
+
+.field-hint {
+  font-size: 11px;
+  line-height: 1.45;
+  color: var(--text-muted);
+}
+
+/* ---------- SUBMIT STATE ---------- */
+/* While a request is in flight the button stops accepting taps, so a double
+   tap cannot send two sign-in attempts. */
+.btn-submit[disabled],
+.btn-submit.is-busy {
+  opacity: 0.65;
+  cursor: progress;
+  transform: none;
+  box-shadow: none;
+}
+
+/* ---------- ALTERNATE ROUTE ---------- */
+.auth-alt {
+  margin-top: 22px;
+  font-size: 12.5px;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.auth-alt a {
+  color: var(--accent);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.auth-alt a:hover {
+  text-decoration: underline;
+}
+
+/* ---------- DEMO NOTICE ---------- */
+/* Tells the reader plainly that the session is local, so nobody mistakes the
+   prototype for a working account system. Hidden in Supabase mode. */
+.auth-note {
+  margin-top: 18px;
+  border: 1px dashed var(--line-strong);
+  border-radius: 12px;
+  padding: 12px 14px;
+  font-size: 11.5px;
+  line-height: 1.5;
+  color: var(--text-muted);
+  background: rgba(29, 195, 221, 0.05);
+}
+
+.auth-note strong {
+  color: var(--text-sub);
+}
+
+/* ---------- BACK LINK ---------- */
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 18px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-sub);
+  text-decoration: none;
+}
+
+.back-link:hover {
+  color: var(--text);
+}
+
+.back-link svg {
+  width: 15px;
+  height: 15px;
+}
+
+/* ---------- PROFILE / ACCOUNT ---------- */
+.profile-container {
+  width: 100%;
+  max-width: 420px;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  padding: calc(env(safe-area-inset-top, 20px) + 20px) 22px calc(env(safe-area-inset-bottom, 20px) + 28px);
+}
+
+.page-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 22px;
+}
+
+.page-head h1 {
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -0.2px;
+}
+
+.profile-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  background: var(--card-bg);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 26px 20px 22px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+}
+
+.profile-avatar-lg {
+  width: 66px;
+  height: 66px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  font-weight: 900;
+  color: var(--ink);
+  background: var(--accent);
+  box-shadow: 0 0 0 4px rgba(29, 195, 221, 0.14);
+  margin-bottom: 4px;
+}
+
+.profile-name {
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--text);
+  text-align: center;
+}
+
+.profile-email {
+  font-size: 12px;
+  color: var(--text-muted);
+  word-break: break-all;
+  text-align: center;
+}
+
+.demo-chip {
+  margin-top: 6px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--accent);
+  border: 1px solid rgba(29, 195, 221, 0.4);
+  background: rgba(29, 195, 221, 0.1);
+  border-radius: 999px;
+  padding: 4px 10px;
+}
+
+/* ---------- SETTINGS LIST ---------- */
+.settings-block {
+  margin-top: 20px;
+}
+
+.block-label {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  padding-left: 4px;
+}
+
+.settings-card {
+  background: var(--card-bg);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.setting-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 15px 16px;
+  border-bottom: 1px solid var(--line);
+  background: none;
+  width: 100%;
+  text-align: left;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text);
+  font-family: inherit;
+}
+
+.setting-row:last-child {
+  border-bottom: 0;
+}
+
+.setting-row .row-text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.setting-row .row-sub {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.setting-row .row-value {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.setting-row .row-arrow {
+  width: 15px;
+  height: 15px;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+button.setting-row {
+  cursor: pointer;
+}
+
+button.setting-row:active {
+  background: var(--surface-raised);
+}
+
+/* Inline name editor: sits inside its row instead of opening a modal. */
+.name-form {
+  display: flex;
+  gap: 8px;
+  padding: 12px 16px 16px;
+  border-bottom: 1px solid var(--line);
+}
+
+.name-form .input-box {
+  flex: 1;
+  padding: 11px 13px;
+  font-size: 13px;
+}
+
+.name-form button {
+  flex-shrink: 0;
+  border: 0;
+  border-radius: 10px;
+  padding: 0 16px;
+  font-size: 12.5px;
+  font-weight: 800;
+  color: var(--ink);
+  background: var(--accent);
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.danger-btn {
+  margin-top: 22px;
+  width: 100%;
+  border: 1px solid rgba(255, 96, 96, 0.4);
+  background: rgba(255, 96, 96, 0.08);
+  color: #ff8b8b;
+  border-radius: 14px;
+  padding: 15px;
+  font-size: 13.5px;
+  font-weight: 800;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.danger-btn:active {
+  background: rgba(255, 96, 96, 0.16);
+}
+
+.app-version {
+  margin-top: 22px;
+  text-align: center;
+  font-size: 10.5px;
+  color: var(--text-muted);
+  letter-spacing: 0.4px;
+}

@@ -1,0 +1,40 @@
+/* ---------- CONTINUUM ACADEMY — DISCIPLINES ---------- */
+/* The app shell, top bar, cards, carousels, modal and bottom nav all come
+   from home.css. This file only adds the page masthead and the group rhythm,
+   so every surface here stays in step with the Home page. */
+
+/* Slower rhythm than Home: a library page needs clearer section breaks */
+.main-content {
+  gap: 26px;
+}
+
+/* ---------- MASTHEAD ---------- */
+/* .page-head, .page-title, .page-sub and .page-rule live in home.css now,
+   shared with My Library. This file only adds what is specific to a
+   discipline listing. */
+
+/* ---------- DISCIPLINE GROUPS ---------- */
+.discipline-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.discipline-group .section-title {
+  margin-bottom: 12px;
+}
+
+/* Panel of fellows / single-speaker rows read better with a shorter name */
+.discipline-group .cards-carousel {
+  padding-left: 0;
+}
+
+/* Empty state, only visible if the data file is missing */
+.library-empty {
+  padding: 28px 16px;
+  border: 1px dashed var(--line-strong);
+  border-radius: 14px;
+  text-align: center;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text-muted);
+}

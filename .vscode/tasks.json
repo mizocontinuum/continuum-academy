@@ -1,0 +1,35 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      // Static server for Run and Debug. Background task: VS Code waits for the
+      // "Ready:" line before letting the debugger open the browser.
+      "label": "serve:dev",
+      "type": "shell",
+      "command": "python3",
+      "args": ["${workspaceFolder}/.vscode/serve.py", "8080"],
+      "isBackground": true,
+      "presentation": {
+        "reveal": "silent",
+        "panel": "dedicated",
+        "clear": true,
+        "close": true
+      },
+      "problemMatcher": {
+        "owner": "dev-server",
+        "severity": "info",
+        "pattern": [
+          {
+            "regexp": "^(.*)$",
+            "message": 1
+          }
+        ],
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": ".*",
+          "endsPattern": "^Ready:"
+        }
+      }
+    }
+  ]
+}

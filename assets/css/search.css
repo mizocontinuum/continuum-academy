@@ -1,0 +1,281 @@
+/* ---------- CONTINUUM ACADEMY — SEARCH ---------- */
+/* Tokens, modal and bottom nav come from home.css. This file owns the search
+   field plus the two result presentations: rows when the field is empty,
+   a two-column grid once the visitor starts typing. */
+
+/* ---------- SEARCH FIELD (sticky, replaces the top bar) ---------- */
+.search-header {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  padding-top: calc(var(--safe-top) + 8px);
+  background: rgba(11, 17, 23, 0.92);
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.search-field {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 54px;
+  padding: 0 16px;
+}
+
+.search-icon {
+  width: 21px;
+  height: 21px;
+  flex-shrink: 0;
+  color: var(--text-sub);
+}
+
+.search-input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  font-family: var(--font-family);
+  font-size: 15.5px;
+  font-weight: 500;
+  outline: none;
+}
+
+.search-input::placeholder {
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+/* Safari draws its own clear affordance; keep only our field chrome */
+.search-input::-webkit-search-decoration,
+.search-input::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.mic-btn {
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text-sub);
+  cursor: pointer;
+  transition: color 0.2s ease, background 0.2s ease;
+}
+
+.mic-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+.mic-btn:hover,
+.mic-btn:active {
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.mic-btn.listening {
+  color: var(--accent);
+  background: var(--accent-glow);
+}
+
+/* ---------- BLOCKS ---------- */
+.search-main {
+  padding-top: 16px;
+  gap: 20px;
+}
+
+.search-block[hidden] {
+  display: none;
+}
+
+.block-title {
+  font-size: 18px;
+  line-height: 1.25;
+  font-weight: 800;
+  letter-spacing: -0.2px;
+  color: var(--text);
+  margin-bottom: 14px;
+}
+
+/* ---------- EMPTY STATE: RESULT ROWS ---------- */
+.result-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.result-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  cursor: pointer;
+  transition: transform 0.18s ease;
+}
+
+.result-row:active {
+  transform: scale(0.985);
+}
+
+.result-thumb {
+  position: relative;
+  width: 118px;
+  flex-shrink: 0;
+  aspect-ratio: 16 / 9;
+  border-radius: 9px;
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid rgba(28, 40, 51, 0.85);
+}
+
+/* Miniature poster: the artwork shrinks, its type shrinks with it */
+.result-thumb .thumb-fallback {
+  padding: 7px 8px;
+}
+
+.result-thumb .thumb-top-logos,
+.result-thumb .speaker-avatar-wrap {
+  display: none;
+}
+
+.result-thumb .thumb-headline {
+  font-size: 7px;
+  line-height: 1.25;
+  letter-spacing: -0.1px;
+}
+
+.result-thumb .thumb-speaker-info b {
+  font-size: 6.5px;
+}
+
+.result-thumb .thumb-speaker-info span {
+  font-size: 5.5px;
+}
+
+.result-title {
+  flex: 1;
+  min-width: 0;
+  font-size: 13.5px;
+  line-height: 1.35;
+  font-weight: 700;
+  color: var(--text);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.result-play {
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.result-play svg {
+  width: 11px;
+  height: 11px;
+  margin-left: 1px;
+}
+
+.result-play:hover,
+.result-row:active .result-play {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+/* ---------- TYPED STATE: RESULTS GRID ---------- */
+.search-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px 10px;
+}
+
+.grid-card {
+  cursor: pointer;
+  min-width: 0;
+  transition: transform 0.18s ease;
+}
+
+.grid-card:active {
+  transform: scale(0.97);
+}
+
+.grid-thumb {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid rgba(28, 40, 51, 0.85);
+}
+
+.grid-thumb .thumb-fallback {
+  padding: 8px 9px;
+}
+
+.grid-thumb .thumb-top-logos,
+.grid-thumb .speaker-avatar-wrap {
+  display: none;
+}
+
+.grid-thumb .thumb-headline {
+  font-size: 9.5px;
+  line-height: 1.25;
+}
+
+.grid-thumb .thumb-speaker-info b {
+  font-size: 8px;
+}
+
+.grid-thumb .thumb-speaker-info span {
+  font-size: 6.5px;
+}
+
+.grid-caption {
+  margin-top: 6px;
+  font-size: 12px;
+  line-height: 1.3;
+  font-weight: 700;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ---------- EMPTY RESULT SET ---------- */
+.empty-state {
+  padding: 44px 12px;
+  text-align: center;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+/* Result count for screen readers only: the grid speaks for itself */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

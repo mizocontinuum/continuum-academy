@@ -1,0 +1,260 @@
+/* ---------- CONTINUUM ACADEMY — ADMIN BETA ---------- */
+/* Loaded after home.css, so the shell (top bar, toast, palette variables)
+   is shared. This file only styles the forms and lists. */
+
+body {
+  background: var(--bg-page-gradient);
+  /* No bottom nav on this page, so home.css's reserved 110px is undone */
+  padding-bottom: calc(24px + var(--safe-bottom));
+}
+
+.admin-title {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+
+.admin-title em {
+  font-style: normal;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 99px;
+  padding: 2px 8px;
+  margin-left: 6px;
+  vertical-align: 2px;
+}
+
+.admin-main {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 12px 16px calc(48px + var(--safe-bottom));
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.admin-section {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 18px 16px;
+}
+
+.admin-heading {
+  margin: 0 0 4px;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.admin-group-name {
+  color: var(--accent);
+}
+
+.admin-hint {
+  margin: 0 0 14px;
+  font-size: 12.5px;
+  color: var(--text-muted);
+  line-height: 1.45;
+}
+
+/* ---------- FORMS ---------- */
+.admin-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.field-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  flex: 1 1 160px;
+  min-width: 0;
+}
+
+.field.grow {
+  flex: 1 1 100%;
+}
+
+.field > span {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  color: var(--text-sub);
+}
+
+.field input,
+.field select {
+  width: 100%;
+  box-sizing: border-box;
+  background: var(--surface-raised);
+  border: 1px solid var(--line-strong);
+  border-radius: 10px;
+  color: var(--text);
+  font-size: 14px;
+  padding: 10px 12px;
+  font-family: inherit;
+}
+
+.field input:focus,
+.field select:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+.field input[type="file"] {
+  padding: 8px 10px;
+  font-size: 12.5px;
+}
+
+.field input[type="file"]::file-selector-button {
+  background: var(--surface);
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  color: var(--text-sub);
+  font-size: 12px;
+  padding: 6px 10px;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+/* ---------- BUTTONS ---------- */
+.admin-btn {
+  align-self: flex-start;
+  background: var(--surface-raised);
+  border: 1px solid var(--line-strong);
+  border-radius: 99px;
+  color: var(--text);
+  font-size: 13.5px;
+  font-weight: 600;
+  font-family: inherit;
+  padding: 9px 18px;
+  cursor: pointer;
+}
+
+.admin-btn.primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--ink);
+}
+
+.admin-btn.primary:hover {
+  background: var(--accent-hover);
+}
+
+.admin-btn.ghost {
+  background: transparent;
+}
+
+.admin-btn.danger {
+  color: #ff7a7a;
+  border-color: rgba(255, 122, 122, 0.4);
+}
+
+.admin-btn.small {
+  font-size: 12px;
+  padding: 6px 12px;
+}
+
+/* ---------- LISTS ---------- */
+.group-list,
+.video-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.group-item,
+.video-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  background: var(--surface-raised);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 10px 12px;
+}
+
+.group-item .item-name,
+.video-item .item-name {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.3;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.group-item .item-sub,
+.video-item .item-sub {
+  font-size: 11.5px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.item-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.item-actions {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.group-item.selectable {
+  cursor: pointer;
+}
+
+.group-item.selected {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+.file-chip {
+  display: inline-block;
+  font-size: 10.5px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 99px;
+  margin-top: 4px;
+}
+
+.file-chip.has {
+  color: var(--accent);
+  border: 1px solid var(--accent);
+}
+
+.file-chip.missing {
+  color: var(--gold);
+  border: 1px solid var(--gold);
+}
+
+.empty-note {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin: 4px 0 0;
+}
+
+/* ---------- BETA NOTE ---------- */
+.admin-note p {
+  font-size: 13px;
+  color: var(--text-sub);
+  line-height: 1.55;
+  margin: 0 0 12px;
+}

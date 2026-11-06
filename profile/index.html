@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" data-requires-auth>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#000000">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Continuum Academy - My Account</title>
+
+  <link rel="manifest" href="../manifest.webmanifest">
+  <link rel="apple-touch-icon" href="../assets/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="../assets/images/icon-192.png">
+
+  <link rel="stylesheet" href="../assets/css/login.css">
+  <link rel="stylesheet" href="../assets/css/auth.css">
+
+  <!-- Guard runs here: signed-out visitors never see this page -->
+  <script src="../assets/js/config.js"></script>
+  <script src="../assets/js/auth.js"></script>
+</head>
+
+<body>
+  <div class="toast-msg" id="profileToast" role="status"></div>
+
+  <div class="profile-container">
+
+    <header class="page-head">
+      <a class="back-link" href="../home/" aria-label="Back to home" style="margin-bottom:0">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+      </a>
+      <h1>My Account</h1>
+    </header>
+
+    <section class="profile-hero">
+      <div class="profile-avatar-lg" data-session-initial>M</div>
+      <p class="profile-name" data-session-name>Member</p>
+      <p class="profile-email" data-session-email></p>
+      <span class="demo-chip" data-demo-chip>Demo session</span>
+    </section>
+
+    <section class="settings-block">
+      <p class="block-label">Profile</p>
+      <div class="settings-card">
+        <button class="setting-row" id="editNameBtn" type="button">
+          <span class="row-text">
+            Display name
+            <span class="row-sub">Used on your library and certificates</span>
+          </span>
+          <span class="row-value" data-session-name>Member</span>
+        </button>
+
+        <!-- Inline editor, opened by the row above -->
+        <form class="name-form" id="nameForm" hidden>
+          <input type="text" class="input-box" id="displayName" name="displayName" placeholder="Your name" minlength="2" required autocomplete="name">
+          <button type="submit" id="saveNameBtn">Save</button>
+        </form>
+      </div>
+    </section>
+
+    <section class="settings-block">
+      <p class="block-label">Session</p>
+      <div class="settings-card">
+        <button class="setting-row" type="button" data-logout>
+          <span class="row-text">
+            Sign out
+            <span class="row-sub">Ends this session on this device</span>
+          </span>
+          <svg class="row-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </button>
+      </div>
+    </section>
+
+    <section class="settings-block">
+      <p class="block-label">On this device</p>
+      <div class="settings-card">
+        <div class="setting-row">
+          <span class="row-text">
+            Watch progress
+            <span class="row-sub">Saved locally until the account API is connected</span>
+          </span>
+          <span class="row-value" id="progressCount">0 titles</span>
+        </div>
+      </div>
+
+      <button class="danger-btn" id="clearDataBtn" type="button">Clear my progress on this device</button>
+    </section>
+
+    <p class="app-version">Continuum Academy · Prototype UI</p>
+
+  </div>
+
+  <script src="../assets/js/store.js"></script>
+  <script src="../assets/js/profile.js"></script>
+</body>
+</html>

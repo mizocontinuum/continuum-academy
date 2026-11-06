@@ -1,0 +1,259 @@
+/* ---------- CONTINUUM ACADEMY — EXPLORE FREE DISCIPLINE ---------- */
+/* Tokens, artwork, duration badge, modal and bottom nav come from home.css.
+   This file owns the free-access pitch card, the discipline filter pills and
+   the two-column video grid, all on the same scale as My Library. */
+
+.explore-main {
+  padding-top: 16px;
+  gap: 30px;
+}
+
+/* ---------- FREE ACCESS PITCH ---------- */
+.free-hero {
+  position: relative;
+  padding: 20px 20px 24px;
+  border-radius: 22px;
+  border: 1px solid rgba(29, 195, 221, 0.16);
+  background:
+    radial-gradient(circle at 12% 4%, rgba(29, 195, 221, 0.16) 0%, transparent 46%),
+    linear-gradient(158deg, rgba(21, 31, 42, 0.96) 0%, rgba(15, 23, 31, 0.98) 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  overflow: hidden;
+}
+
+.free-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* The promise: outlined, so it reads as a stamp rather than a button */
+.free-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 38px;
+  padding: 0 14px;
+  border-radius: 999px;
+  border: 1.5px solid var(--accent);
+  background: rgba(29, 195, 221, 0.14);
+  color: var(--accent);
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.7px;
+  text-transform: uppercase;
+}
+
+.free-pill svg {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+.free-tag {
+  display: inline-flex;
+  align-items: center;
+  height: 38px;
+  padding: 0 16px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-sub);
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.7px;
+  text-transform: uppercase;
+}
+
+.free-title {
+  margin-top: 22px;
+  font-size: 30px;
+  line-height: 1.1;
+  font-weight: 900;
+  letter-spacing: -1px;
+  color: var(--text);
+}
+
+.free-copy {
+  margin-top: 12px;
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--text-sub);
+}
+
+/* ---------- DISCIPLINE FILTER ---------- */
+/* Bleeds to the screen edge so the next track is always half visible */
+.track-filter {
+  display: flex;
+  gap: 10px;
+  margin: 0 -16px;
+  padding: 2px 16px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+}
+
+.track-filter::-webkit-scrollbar {
+  display: none;
+}
+
+.filter-pill {
+  flex: 0 0 auto;
+  height: 40px;
+  padding: 0 16px;
+  border-radius: 999px;
+  border: 1px solid var(--line-strong);
+  background: transparent;
+  color: var(--text);
+  font-family: var(--font-family);
+  font-size: 12.5px;
+  font-weight: 800;
+  letter-spacing: -0.1px;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.filter-pill:active {
+  transform: scale(0.97);
+}
+
+.filter-pill[aria-selected="true"] {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--ink);
+}
+
+/* ---------- ONE SECTION PER DISCIPLINE ---------- */
+.track-head {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas:
+    "title title"
+    "goal  link";
+  align-items: end;
+  column-gap: 12px;
+  row-gap: 7px;
+  margin-bottom: 14px;
+}
+
+/* Uppercase at this weight needs positive tracking to keep the letters apart */
+.track-title {
+  grid-area: title;
+  font-size: 19px;
+  line-height: 1.25;
+  font-weight: 900;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.track-goal {
+  grid-area: goal;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.track-link {
+  grid-area: link;
+  padding-bottom: 1px;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--text-sub);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.track-link:active {
+  color: var(--accent);
+}
+
+/* ---------- VIDEO GRID ---------- */
+.track-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px 12px;
+}
+
+.exp-card {
+  min-width: 0;
+  cursor: pointer;
+  transition: transform 0.18s ease;
+}
+
+.exp-card:active {
+  transform: scale(0.97);
+}
+
+.exp-thumb {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid rgba(28, 40, 51, 0.85);
+}
+
+/* Miniature poster: the artwork shrinks, its type shrinks with it */
+.exp-thumb .thumb-fallback {
+  padding: 9px 10px;
+}
+
+.exp-thumb .thumb-top-logos {
+  font-size: 5.5px;
+}
+
+.exp-thumb .speaker-avatar-wrap {
+  display: none;
+}
+
+.exp-thumb .thumb-headline {
+  max-width: 84%;
+  font-size: 9.5px;
+  line-height: 1.25;
+}
+
+.exp-thumb .thumb-speaker-info b {
+  font-size: 7.5px;
+}
+
+.exp-thumb .thumb-speaker-info span {
+  font-size: 6px;
+}
+
+.exp-tag {
+  margin-top: 8px;
+  font-size: 8.5px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.exp-title {
+  margin-top: 3px;
+  font-size: 13px;
+  line-height: 1.3;
+  font-weight: 700;
+  color: var(--text);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ---------- EMPTY / NOSCRIPT ---------- */
+.explore-empty {
+  padding: 34px 16px;
+  border: 1px dashed var(--line-strong);
+  border-radius: 14px;
+  text-align: center;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text-muted);
+}

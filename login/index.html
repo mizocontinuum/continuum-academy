@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#000000">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Continuum Academy - Login</title>
+
+  <!-- Installable on the home screen -->
+  <link rel="manifest" href="../manifest.webmanifest">
+  <link rel="apple-touch-icon" href="../assets/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="../assets/images/icon-192.png">
+
+  <!-- Login page styles (separate from index) -->
+  <link rel="stylesheet" href="../assets/css/login.css">
+  <link rel="stylesheet" href="../assets/css/auth.css">
+
+  <!-- Session layer: config first, then the module that reads it -->
+  <script src="../assets/js/config.js"></script>
+  <script src="../assets/js/auth.js"></script>
+</head>
+
+<body>
+  <!-- Toast feedback notification -->
+  <div class="toast-msg" id="loginToast" role="status"></div>
+
+  <div class="login-container">
+    
+    <!-- Top Brand Header with Continuum Logo (left) and Powered By Mansmith (right) -->
+    <header class="brand-header">
+      <img src="../assets/images/logo.png" alt="Continuum Academy Inc." class="brand-logo-img">
+      
+      <div class="brand-divider"></div>
+
+      <div class="powered-badge">
+        <span class="powered-text">POWERED BY</span>
+        <img src="../assets/images/mansmith.png" alt="Mansmith and Fielders, Inc." class="mansmith-logo-img">
+      </div>
+    </header>
+
+    <!-- Main Login Card (Glassmorphism rounded border card) -->
+    <main class="login-card">
+      <h1 class="headline">Welcome back</h1>
+      <p class="subheadline">Enter your credentials to access your executive learning cockpit</p>
+
+      <form class="login-form" id="loginForm" autocomplete="on">
+        
+        <!-- Email Input Field -->
+        <div class="form-group">
+          <label class="form-label" for="email">EMAIL ADDRESS</label>
+          <input 
+            type="email" 
+            id="email" 
+            name="email" 
+            class="input-box" 
+            placeholder="name@company.com" 
+            required 
+            autocomplete="email"
+          >
+        </div>
+
+        <!-- Password Input Field -->
+        <div class="form-group">
+          <div class="form-label-row">
+            <label class="form-label" for="password">PASSWORD</label>
+            <a href="../forgot-password/" class="forgot-link">Forgot Password ?</a>
+          </div>
+          <input 
+            type="password" 
+            id="password" 
+            name="password" 
+            class="input-box" 
+            placeholder="••••••••" 
+            required 
+            autocomplete="current-password"
+          >
+        </div>
+
+        <!-- Where a rejected sign-in lands -->
+        <p class="form-error" id="loginError" role="alert"></p>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn-submit">
+          <span>Sign In</span>
+          <span class="arrow-icon">➔</span>
+        </button>
+
+      </form>
+
+      <!-- Sign Up Prompt -->
+      <p class="signup-hint">
+        Don't have an account ? <a href="../signup/" class="signup-link">Start Free</a>
+      </p>
+
+      <p class="auth-note" data-demo-chip>
+        <strong>Demo session.</strong> This build signs in on this device only — any email
+        with an 8-character password opens the prototype. No password is stored.
+      </p>
+    </main>
+
+    <!-- Footer Links -->
+    <footer class="login-footer">
+      <div class="footer-row">
+        <a href="#" class="footer-link">Terms &amp; Conditions</a>
+        <span class="dot">•</span>
+        <a href="#" class="footer-link">Privacy Policy</a>
+        <span class="dot">•</span>
+        <a href="#" class="footer-link">Recurring Terms</a>
+      </div>
+      <div class="footer-row">
+        <a href="#" class="footer-link">Refund Policy</a>
+        <span class="dot">•</span>
+        <a href="#" class="footer-link">Contact</a>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- Login script -->
+  <script src="../assets/js/login.js"></script>
+</body>
+</html>

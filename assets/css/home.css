@@ -1,0 +1,1326 @@
+/* ---------- CONTINUUM ACADEMY — HOME ---------- */
+/* SIMPLE PALETTE
+   Surfaces: page, card, raised · Accent: one cyan in three states
+   Text: three levels · everything else is neutral black, white or slate. */
+:root {
+  /* Surfaces */
+  --bg-page: #0b1117;         /* soft slate, not pure black */
+  --surface: #151f2a;         /* cards, sheets */
+  --surface-raised: #1c2833;  /* buttons, badges, chips */
+  --line: rgba(255, 255, 255, 0.08);
+  --line-strong: rgba(255, 255, 255, 0.14);
+
+  /* One accent */
+  --accent: #1dc3dd;
+  --accent-hover: #35d2ea;
+  --accent-active: #14a7bd;
+  --accent-glow: rgba(29, 195, 221, 0.18);
+  --gold: #e6a23c;            /* forthcoming / coming soon only */
+  --ink: #000000;             /* text that sits on the accent */
+
+  /* Text */
+  --text: #ffffff;
+  --text-sub: #a7b6c2;
+  --text-muted: #8b9aa7;
+
+  /* Page depth: one simple vertical shift, darker toward the bottom */
+  --bg-page-gradient: linear-gradient(180deg, #111a23 0%, #0b1117 45%, #080d12 100%);
+
+  /* Component surfaces, all derived from the scale above */
+  --card-bg: var(--surface);
+  --btn-accent-bg: var(--accent);
+  --btn-secondary-bg: var(--surface-raised);
+  --btn-secondary-border: var(--line-strong);
+  --nav-bg: rgba(11, 17, 23, 0.85);
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  /* Brand mark height. Keep in sync with --logo-height in assets/css/login.css */
+  --logo-height: 40px;
+  --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+/* The display rules below beat the UA's [hidden] default, so the attribute
+   has to win explicitly — pages toggle sections with it. */
+[hidden] {
+  display: none !important;
+}
+
+html,
+body {
+  width: 100%;
+  min-height: 100%;
+  min-height: 100dvh;
+  background-color: var(--bg-page);
+  background-image: var(--bg-page-gradient);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  color: var(--text);
+  font-family: var(--font-family);
+  overflow-x: clip;
+  /* clip preserves position:sticky without creating unwanted scroll containers */
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+/* App Container for Mobile Frame / Responsive View */
+.app-container {
+  width: 100%;
+  max-width: 440px;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  background-color: transparent;
+  padding-bottom: calc(110px + var(--safe-bottom));
+}
+
+/* ---------- TOP BAR (Sticky Navigation with Frosted Glass & Dynamic Color Adaptation) ---------- */
+.top-bar {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: calc(var(--safe-top) + 14px) 20px 14px;
+  background: rgba(11, 17, 23, 0.6);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  transition: background 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    padding 0.25s ease;
+}
+
+/* Scrolled state: softly blurs & adapts to cards/colors passing underneath with a balanced cyan-glass outline */
+.top-bar.scrolled {
+  background: rgba(11, 17, 23, 0.85);
+  backdrop-filter: blur(24px) saturate(190%);
+  -webkit-backdrop-filter: blur(24px) saturate(190%);
+  border-bottom: 1px solid rgba(29, 195, 221, 0.12);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45), 0 1px 0 rgba(29, 195, 221, 0.12);
+}
+
+.brand-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.brand-link:hover {
+  opacity: 0.88;
+}
+
+.brand-logo {
+  height: var(--logo-height);
+  width: auto;
+  object-fit: contain;
+  display: block;
+}
+
+.top-actions {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.icon-btn {
+  background: none;
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 0;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.icon-btn:hover {
+  transform: scale(1.06);
+  opacity: 0.9;
+}
+
+.icon-btn:active {
+  transform: scale(0.96);
+}
+
+.bell-icon {
+  width: 22px;
+  height: 22px;
+  display: block;
+}
+
+.avatar-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--surface-raised);
+  border: none;
+  box-shadow: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.avatar-btn:hover {
+  transform: scale(1.05);
+  opacity: 0.95;
+}
+
+.avatar-btn:active {
+  transform: scale(0.95);
+}
+
+.avatar-letter {
+  font-size: 17px;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  letter-spacing: -0.2px;
+}
+
+/* ---------- MAIN SCROLLABLE CONTENT ---------- */
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 0 16px 28px;
+  gap: 22px;
+}
+
+/* ---------- PAGE MASTHEAD ---------- */
+/* Shared by the library pages (Disciplines, My Library) so a page heading
+   outside Home keeps the same weight, measure and rule. */
+.page-head {
+  padding-top: 12px;
+}
+
+.page-title {
+  font-size: 36px;
+  line-height: 1.05;
+  font-weight: 900;
+  letter-spacing: -1.2px;
+  color: var(--text);
+}
+
+.page-sub {
+  margin-top: 10px;
+  max-width: 32ch;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-sub);
+}
+
+.page-rule {
+  height: 1px;
+  background: var(--line);
+}
+
+/* ---------- HERO / TRAILER SECTION ---------- */
+.hero-section {
+  position: relative;
+  width: 100%;
+  margin-top: 20px; /* Spacious, comfortable breathing room below navigation bar */
+  border-radius: 20px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 480px;
+  padding: 20px 18px;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.3); /* Softened, balanced card shadow */
+  border: 1px solid rgba(29, 195, 221, 0.12);
+  background: var(--surface);
+}
+
+/* ---------- LIVE TRAILER LAYER ---------- */
+.hero-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Portrait clip: bias upward so the subject stays in frame */
+  object-position: center 30%;
+  z-index: 0;
+  background: var(--bg-page);
+  transition: opacity 0.4s ease;
+}
+
+/* Autoplay blocked, clip missing, or reduced motion: fall back to the gradient */
+.hero-video-off .hero-video {
+  opacity: 0;
+}
+
+/* Dynamic ambient cinematic backdrop (translucent so the trailer shows through) */
+.hero-backdrop {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(11, 17, 23, 0.4) 0%, transparent 55%),
+    linear-gradient(180deg, rgba(11, 17, 23, 0.4) 0%, rgba(11, 17, 23, 0.6) 50%, rgba(11, 17, 23, 0.78) 100%);
+  z-index: 1;
+  transition: background 0.6s ease;
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.1) 0%, rgba(11, 17, 23, 0.4) 40%, rgba(11, 17, 23, 0.85) 85%, rgba(11, 17, 23, 1) 100%);
+  z-index: 2;
+}
+
+/* Carousel Chevron Buttons */
+.chevron-btn {
+  position: absolute;
+  top: 130px;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(11, 17, 23, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(8px);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.chevron-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+.chevron-btn:hover {
+  background: rgba(11, 17, 23, 0.85);
+  border-color: rgba(29, 195, 221, 0.32);
+  transform: scale(1.1);
+}
+
+.chevron-btn:active {
+  transform: scale(0.94);
+}
+
+.chevron-prev {
+  left: 14px;
+}
+
+.chevron-next {
+  right: 14px;
+}
+
+/* Hero Details Container */
+.hero-details {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Carousel Indicator Dashes */
+.carousel-indicators {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.dash {
+  width: 22px;
+  height: 3px;
+  border-radius: 99px;
+  background-color: rgba(255, 255, 255, 0.12);
+  transition: background-color 0.3s ease, width 0.3s ease;
+}
+
+.dash.active {
+  background-color: var(--accent);
+  box-shadow: 0 0 12px var(--accent-glow);
+  width: 28px;
+}
+
+/* Featured Title */
+.hero-title {
+  font-size: 19px;
+  line-height: 1.25;
+  font-weight: 800;
+  letter-spacing: -0.2px;
+  color: #ffffff;
+  margin-bottom: 18px;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+}
+
+/* Primary Play Button */
+.btn-play {
+  width: 100%;
+  height: 48px;
+  background-color: #ffffff;
+  color: var(--ink);
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 800;
+  font-family: inherit;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.24);
+  transition: transform 0.15s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+  margin-bottom: 12px;
+}
+
+.btn-play .play-icon {
+  width: 18px;
+  height: 18px;
+}
+
+.btn-play:hover {
+  background-color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(29, 195, 221, 0.32);
+}
+
+.btn-play:active {
+  transform: translateY(0) scale(0.985);
+}
+
+/* Secondary Button Row (More Info & + My List) */
+.btn-row-dual {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.btn-secondary {
+  flex: 1;
+  height: 44px;
+  background: var(--btn-secondary-bg);
+  border: 1px solid var(--btn-secondary-border);
+  border-radius: 10px;
+  color: #ffffff;
+  font-size: 14.5px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+}
+
+.btn-secondary:hover {
+  background: rgba(28, 40, 51, 0.6);
+  border-color: var(--accent);
+  box-shadow: 0 0 12px rgba(29, 195, 221, 0.32);
+  transform: translateY(-1px);
+}
+
+.btn-secondary:active {
+  transform: scale(0.98);
+}
+
+.btn-secondary .plus-icon {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+/* Quick Controls Row */
+.controls-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.media-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.circle-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(28, 40, 51, 0.45);
+  border: 1.5px solid rgba(29, 195, 221, 0.32);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.circle-btn svg {
+  width: 17px;
+  height: 17px;
+}
+
+.circle-btn:hover {
+  border-color: var(--accent);
+  background: rgba(28, 40, 51, 0.85);
+  box-shadow: 0 0 12px var(--accent-glow);
+  transform: scale(1.08);
+}
+
+.circle-btn:active {
+  transform: scale(0.94);
+}
+
+.circle-btn.active {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(29, 195, 221, 0.12);
+  box-shadow: 0 0 14px var(--accent-glow);
+}
+
+/* Spotlight Badge */
+.spotlight-badge {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: rgba(28, 40, 51, 0.6);
+  border: 1px solid var(--line-strong);
+  border-radius: 99px;
+  padding: 6px 14px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  cursor: pointer;
+  box-shadow: none;
+  transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+}
+
+.spotlight-badge:hover {
+  border-color: var(--accent-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 0 16px var(--accent-glow);
+}
+
+.spotlight-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: var(--accent);
+  box-shadow: 0 0 8px var(--accent);
+  animation: pulse-dot 2s infinite ease-in-out;
+}
+
+@keyframes pulse-dot {
+
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.6;
+    transform: scale(0.85);
+  }
+}
+
+.spotlight-text {
+  font-size: 12px;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 0.3px;
+}
+
+/* ---------- FLOATING BOTTOM NAVIGATION BAR ---------- */
+.bottom-nav-container {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  padding: 0 16px calc(var(--safe-bottom) + 12px);
+  pointer-events: none;
+  z-index: 90;
+}
+
+.floating-nav {
+  pointer-events: auto;
+  width: 100%;
+  max-width: 400px;
+  height: 62px;
+  background: var(--nav-bg);
+  border: 1px solid rgba(28, 40, 51, 0.6);
+  border-radius: 36px;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 4px 8px;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.75), 0 0 1px rgba(29, 195, 221, 0.32);
+}
+
+.nav-tab {
+  flex: 1;
+  background: none;
+  border: 1px solid transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  height: 48px;
+  border-radius: 20px;
+  transition: all 0.25s ease;
+  padding: 2px 4px;
+}
+
+.nav-tab .nav-icon-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+}
+
+.nav-tab .nav-icon-wrap svg {
+  width: 19px;
+  height: 19px;
+}
+
+.nav-tab .nav-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  line-height: 1;
+}
+
+.nav-tab:hover {
+  color: #ffffff;
+}
+
+.nav-tab:hover .nav-icon-wrap {
+  transform: translateY(-1px);
+}
+
+/* Active tab: soft accent tint, no rim or glow */
+.nav-tab.active {
+  background: rgba(29, 195, 221, 0.12);
+  border-color: transparent;
+  color: var(--accent);
+  box-shadow: none;
+}
+
+.nav-tab.active .nav-icon-wrap svg {
+  stroke-width: 2.3;
+}
+
+/* ---------- TOAST NOTIFICATION ---------- */
+.toast-msg {
+  position: fixed;
+  top: calc(var(--safe-top) + 16px);
+  left: 50%;
+  transform: translateX(-50%) translateY(-100px);
+  background: var(--surface);
+  border: 1px solid var(--accent);
+  color: #ffffff;
+  padding: 10px 18px;
+  border-radius: 99px;
+  font-size: 12.5px;
+  font-weight: 600;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6), 0 0 16px rgba(29, 195, 221, 0.32);
+  transition: transform 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+  z-index: 120;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.toast-msg.show {
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ========================================================
+   CONTENT SECTIONS: CONTINUE WATCHING & TOP 10 TRENDING
+   ======================================================== */
+.content-row-section {
+  display: flex;
+  flex-direction: column;
+  margin-top: 24px;
+}
+
+.section-header {
+  margin-bottom: 14px;
+}
+
+.section-title {
+  font-size: 22px;
+  line-height: 1.2;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.3px;
+  /* Anchor targets from Explore clear the sticky top bar */
+  scroll-margin-top: calc(var(--safe-top) + 88px);
+}
+
+.section-subtitle {
+  font-size: 13.5px;
+  color: var(--text-muted);
+  margin-top: 5px;
+  line-height: 1.45;
+}
+
+/* Section header with a trailing "Explore all" action */
+.section-header.split {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.section-heading {
+  min-width: 0;
+}
+
+.explore-link {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 1px;
+  margin-top: 4px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 0.2s ease;
+}
+
+.explore-link:hover,
+.explore-link:active {
+  color: var(--accent);
+}
+
+.explore-link svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* Section eyebrow: one badge style for every row, stacked above the title */
+.section-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 8px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(29, 195, 221, 0.12);
+  border: 1px solid rgba(29, 195, 221, 0.32);
+  color: var(--accent);
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.7px;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.section-badge svg {
+  width: 11px;
+  height: 11px;
+}
+
+/* Forthcoming rows carry the golden orange instead of the accent */
+.section-badge.gold {
+  background: rgba(230, 162, 60, 0.12);
+  border-color: rgba(230, 162, 60, 0.32);
+  color: var(--gold);
+}
+
+/* Horizontal Scroll Carousels */
+.cards-carousel {
+  display: flex;
+  gap: 14px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding: 4px 4px 12px 2px;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.cards-carousel::-webkit-scrollbar {
+  display: none;
+}
+
+/* Video Card (Continue Watching) */
+.video-card {
+  width: 220px;
+  flex-shrink: 0;
+  scroll-snap-align: start;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.video-card:active {
+  transform: scale(0.97);
+}
+
+.thumb-container {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  border-radius: 14px;
+  overflow: hidden;
+  position: relative;
+  background: var(--surface);
+  border: 1px solid rgba(28, 40, 51, 0.85);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.5);
+}
+
+.thumb-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Fallback Card Graphic when no image file is loaded */
+.thumb-fallback {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 10px 10px 8px;
+  background-size: cover;
+}
+
+.bg-josiah {
+  background: radial-gradient(circle at 85% 50%, rgba(28, 40, 51, 0.85) 0%, transparent 60%), linear-gradient(135deg, var(--surface-raised) 0%, var(--surface) 100%);
+}
+
+.bg-chiqui {
+  background: radial-gradient(circle at 85% 50%, rgba(28, 40, 51, 0.85) 0%, transparent 60%), linear-gradient(135deg, var(--surface-raised) 0%, var(--surface) 100%);
+}
+
+.bg-donald {
+  background: radial-gradient(circle at 85% 50%, rgba(29, 195, 221, 0.32) 0%, transparent 60%), linear-gradient(135deg, var(--surface-raised) 0%, var(--surface) 100%);
+}
+
+.bg-jv {
+  background: radial-gradient(circle at 85% 50%, rgba(28, 40, 51, 0.85) 0%, transparent 60%), linear-gradient(135deg, var(--surface-raised) 0%, var(--surface) 100%);
+}
+
+.bg-bea {
+  background: radial-gradient(circle at 85% 50%, rgba(29, 195, 221, 0.32) 0%, transparent 60%), linear-gradient(135deg, var(--surface-raised) 0%, var(--surface) 100%);
+}
+
+.bg-emilio {
+  background: radial-gradient(circle at 85% 50%, rgba(28, 40, 51, 0.85) 0%, transparent 60%), linear-gradient(135deg, var(--surface-raised) 0%, var(--surface) 100%);
+}
+
+/* Neutral art variants for the discipline rows (same scale, no accent hue) */
+.bg-slate-a {
+  background: radial-gradient(circle at 82% 46%, rgba(28, 40, 51, 0.85) 0%, transparent 60%), linear-gradient(135deg, var(--surface-raised) 0%, var(--surface) 100%);
+}
+
+.bg-slate-b {
+  background: radial-gradient(circle at 18% 28%, rgba(28, 40, 51, 0.85) 0%, transparent 58%), linear-gradient(160deg, var(--surface) 0%, var(--surface-raised) 100%);
+}
+
+.bg-slate-c {
+  background: radial-gradient(circle at 72% 72%, rgba(28, 40, 51, 0.85) 0%, transparent 55%), linear-gradient(200deg, var(--surface-raised) 0%, var(--surface) 100%);
+}
+
+/* "Coming soon" chip for preview titles — sits in the art stack, not over it */
+.thumb-soon {
+  align-self: flex-start;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: rgba(230, 162, 60, 0.12);
+  border: 1px solid rgba(230, 162, 60, 0.32);
+  color: var(--gold);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+}
+
+.thumb-top-logos {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 7.5px;
+  font-weight: 900;
+  letter-spacing: 0.8px;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.thumb-top-logos .thumb-mansmith {
+  color: var(--accent);
+}
+
+.thumb-headline {
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.25;
+  color: #ffffff;
+  margin: 4px 0;
+  max-width: 75%;
+}
+
+.thumb-headline-ranked {
+  font-size: 12px;
+  font-weight: 900;
+  line-height: 1.2;
+  color: #ffffff;
+  margin: 3px 0;
+  max-width: 70%;
+}
+
+.sub-topic {
+  font-size: 9px;
+  font-weight: 800;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.hl-gold {
+  color: var(--accent);
+}
+
+.hl-cyan {
+  color: var(--accent);
+}
+
+.thumb-speaker-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.thumb-speaker-info b {
+  font-size: 9.5px;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.thumb-speaker-info span {
+  font-size: 7px;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.speaker-avatar-wrap {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: rgba(28, 40, 51, 0.45);
+  border: 1px solid rgba(29, 195, 221, 0.32);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+}
+
+.thumb-bottom-logo {
+  font-size: 7.5px;
+  font-weight: 800;
+  color: rgba(255, 255, 255, 0.7);
+  letter-spacing: 0.8px;
+  margin-top: 2px;
+}
+
+/* Play Overlay on Hover/Focus */
+.thumb-play-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(11, 17, 23, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s ease, background 0.2s ease;
+}
+
+.video-card:hover .thumb-play-overlay,
+.ranked-video-card:hover .thumb-play-overlay {
+  opacity: 1;
+  background: rgba(11, 17, 23, 0.6);
+}
+
+.play-pill-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 900;
+  box-shadow: 0 4px 14px rgba(29, 195, 221, 0.32);
+  transform: scale(0.9);
+  transition: transform 0.2s ease;
+}
+
+.video-card:hover .play-pill-icon,
+.ranked-video-card:hover .play-pill-icon {
+  transform: scale(1.05);
+}
+
+/* Duration Badge */
+.duration-badge {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  background: rgba(11, 17, 23, 0.85);
+  border: 1px solid rgba(29, 195, 221, 0.32);
+  border-radius: 6px;
+  padding: 2px 6px;
+  font-size: 9.5px;
+  font-weight: 700;
+  color: #ffffff;
+  backdrop-filter: blur(4px);
+  z-index: 5;
+}
+
+/* Card Meta text below thumb */
+.card-meta {
+  padding: 6px 2px 2px;
+}
+
+.discipline-tag {
+  font-size: 9.5px;
+  font-weight: 800;
+  color: var(--text-muted);
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  display: block;
+}
+
+.card-caption {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #ffffff;
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ========================================================
+   RANKED TOP 10 SECTION (BALANCED OUTLINE NUMBERS IN THE BACK)
+   ======================================================== */
+.ranked-carousel {
+  gap: 16px;
+  padding-left: 6px;
+}
+
+.ranked-video-card {
+  position: relative;
+  width: 250px;
+  flex-shrink: 0;
+  scroll-snap-align: start;
+  cursor: pointer;
+  padding-left: 42px;
+  /* Gutter + a little of the thumbnail: the numeral tucks under the art */
+  transition: transform 0.2s ease;
+}
+
+.ranked-video-card:active {
+  transform: scale(0.97);
+}
+
+/* Rank numeral: a small outlined digit in the gutter left of the card.
+   Real type instead of the old hand-drawn SVG outlines, so 1, 2 and 3
+   share one cap height, one stroke weight and one advance width. */
+.rank-number-wrap {
+  position: absolute;
+  left: 6px;
+  bottom: 22px;
+  /* Baseline lines up with the thumbnail's bottom edge */
+  z-index: 1;
+  /* In the BACK */
+  pointer-events: none;
+}
+
+.rank-num {
+  display: block;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  font-size: 96px;
+  font-weight: 900;
+  line-height: 1;
+  /* Tabular figures: equal advance for every digit */
+  font-variant-numeric: tabular-nums;
+  color: transparent;
+  -webkit-text-stroke: 3.3px rgba(255, 255, 255, 0.92);
+  letter-spacing: -1.7px;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.55));
+  user-select: none;
+}
+
+/* Video card body sits in FRONT on top of the number */
+.ranked-body {
+  width: 100%;
+  position: relative;
+  z-index: 2;
+  /* In FRONT of number */
+}
+
+.ranked-body .thumb-container {
+  position: relative;
+  z-index: 2;
+  background-color: var(--surface);
+  /* Solid base cleanly masks the number behind */
+  border: 1px solid rgba(28, 40, 51, 0.85);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+}
+
+/* ========================================================
+   VIDEO PLAYER MODAL
+   ======================================================== */
+.video-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: none;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.video-modal.open {
+  display: flex;
+}
+
+.video-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(11, 17, 23, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.video-modal-sheet {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 440px;
+  background: var(--bg-page);
+  border: 1px solid rgba(29, 195, 221, 0.32);
+  border-bottom: none;
+  border-radius: 24px 24px 0 0;
+  padding: 18px 18px calc(var(--safe-bottom) + 20px);
+  box-shadow: 0 -12px 36px rgba(0, 0, 0, 0.8), 0 0 24px rgba(29, 195, 221, 0.12);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  animation: slide-up 0.28s cubic-bezier(0.18, 0.89, 0.32, 1);
+  max-height: 92vh;
+  overflow-y: auto;
+}
+
+@keyframes slide-up {
+  from {
+    transform: translateY(100%);
+  }
+
+  to {
+    transform: translateY(0);
+  }
+}
+
+.video-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.video-modal-tag {
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: var(--accent);
+  display: block;
+  margin-bottom: 3px;
+}
+
+.video-modal-title {
+  font-size: 16px;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1.25;
+}
+
+.video-modal-sub {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.video-modal-close {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  border: none;
+  color: #ffffff;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.2s;
+}
+
+.video-modal-close:hover {
+  background: rgba(29, 195, 221, 0.12);
+  color: var(--accent);
+}
+
+.video-frame-wrap {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  /* Portrait clips get a taller frame; this keeps the sheet on-screen */
+  max-height: 54vh;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #080d12;
+  position: relative;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7);
+  border: 1px solid rgba(28, 40, 51, 0.85);
+}
+
+.video-frame-wrap video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.video-sample-fallback {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--surface) 0%, var(--bg-page) 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 16px;
+  color: #ffffff;
+  gap: 8px;
+}
+
+.fallback-icon {
+  font-size: 32px;
+}
+
+.video-sample-fallback h4 {
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.video-sample-fallback p {
+  font-size: 11px;
+  color: var(--text-muted);
+  max-width: 280px;
+}
+
+.video-sample-fallback code {
+  background: rgba(28, 40, 51, 0.6);
+  padding: 2px 5px;
+  border-radius: 4px;
+  color: var(--accent);
+}
+
+.btn-sample-play {
+  margin-top: 6px;
+  background: var(--accent);
+  color: var(--ink);
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 12.5px;
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(29, 195, 221, 0.32);
+  transition: transform 0.15s ease, background 0.2s ease;
+}
+
+.btn-sample-play:hover {
+  background: var(--accent-hover);
+}
+
+.btn-sample-play:active {
+  transform: scale(0.96);
+}
+
+.video-modal-controls {
+  display: flex;
+  gap: 10px;
+}
+
+.modal-btn {
+  flex: 1;
+  height: 38px;
+  border-radius: 8px;
+  background: rgba(28, 40, 51, 0.45);
+  border: 1px solid rgba(29, 195, 221, 0.32);
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.modal-btn:hover {
+  background: rgba(28, 40, 51, 0.6);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.modal-btn:active {
+  transform: scale(0.97);
+}

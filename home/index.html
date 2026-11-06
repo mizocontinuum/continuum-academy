@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en" data-requires-auth>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#000000">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Continuum Academy - Home</title>
+
+  <!-- Theme preference loads before first paint so light mode never flashes dark -->
+  <script src="../assets/js/theme.js"></script>
+  <!-- Home page stylesheet -->
+  <link rel="stylesheet" href="../assets/css/home.css">
+  <!-- Light-theme variable overrides, then the navbar user menu -->
+  <link rel="stylesheet" href="../assets/css/theme.css">
+  <link rel="stylesheet" href="../assets/css/user-menu.css">
+  <!-- Installable on the home screen -->
+  <link rel="manifest" href="../manifest.webmanifest">
+  <link rel="apple-touch-icon" href="../assets/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="../assets/images/icon-192.png">
+
+  <!-- Session guard: signed-out visitors are redirected before first paint -->
+  <script src="../assets/js/config.js"></script>
+  <script src="../assets/js/auth.js"></script>
+</head>
+
+<body>
+  <!-- Toast feedback notification -->
+  <div class="toast-msg" id="homeToast" role="status"></div>
+
+  <div class="app-container">
+    
+    <!-- Top Navigation Bar -->
+    <header class="top-bar">
+      <div class="brand">
+        <a href="index.html" class="brand-link" aria-label="Continuum Academy Home">
+          <img src="../assets/images/logo.png" alt="Continuum Academy Inc." class="brand-logo">
+        </a>
+      </div>
+      <div class="top-actions">
+        <!-- Search -->
+        <a class="icon-btn search-btn" href="../search/" aria-label="Search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="7"></circle>
+            <line x1="21" y1="21" x2="16.5" y2="16.5"></line>
+          </svg>
+        </a>
+
+        <!-- Notification Bell -->
+        <button class="icon-btn bell-btn" id="bellBtn" aria-label="Notifications">
+          <svg class="bell-icon" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+          </svg>
+        </button>
+
+        <!-- User Avatar: opens the user menu (user-menu.js) -->
+        <button class="avatar-btn" id="profileBtn" aria-label="Account menu">
+          <span class="avatar-letter" data-session-initial>M</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Scrollable Content -->
+    <main class="main-content">
+      
+      <!-- Hero / Featured Trailer Section -->
+      <section class="hero-section" id="heroSection">
+        
+        <!-- Live trailer: muted, looping ambient playback (started by home.js so
+             it can respect prefers-reduced-motion and fall back gracefully) -->
+        <video class="hero-video" id="heroVideo" muted loop playsinline preload="metadata" aria-hidden="true" tabindex="-1">
+          <source id="heroVideoSource" src="">
+        </video>
+
+        <!-- Ambient lighting tint, layered over the trailer for text contrast -->
+        <div class="hero-backdrop" id="heroBackdrop"></div>
+        <div class="hero-overlay"></div>
+
+        <!-- Carousel Chevron Arrows -->
+        <button class="chevron-btn chevron-prev" id="prevHero" aria-label="Previous Slide">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </button>
+        <button class="chevron-btn chevron-next" id="nextHero" aria-label="Next Slide">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </button>
+
+        <!-- Hero Content Area -->
+        <div class="hero-details">
+          
+          <!-- Slide Indicator Dashes -->
+          <div class="carousel-indicators" id="carouselIndicators">
+            <span class="dash active"></span>
+            <span class="dash"></span>
+            <span class="dash"></span>
+            <span class="dash"></span>
+            <span class="dash"></span>
+            <span class="dash"></span>
+          </div>
+
+          <!-- Featured Headline -->
+          <h1 class="hero-title" id="heroTitle">
+            Own the Mind: How to Position Your Brand So Customers Choose You First
+          </h1>
+
+          <!-- Main CTA: Play Video -->
+          <button class="btn-play" id="playBtn">
+            <svg class="play-icon" viewBox="0 0 24 24" fill="currentColor">
+              <polygon points="5 3 19 12 5 21 5 3"></polygon>
+            </svg>
+            <span>Play Video</span>
+          </button>
+
+          <!-- Secondary Action Buttons Row -->
+          <div class="btn-row-dual">
+            <button class="btn-secondary" id="moreInfoBtn">
+              More Info
+            </button>
+            <button class="btn-secondary" id="myListBtn">
+              <span class="plus-icon">＋</span> My List
+            </button>
+          </div>
+
+          <!-- Quick Controls & Spotlight Row -->
+          <div class="controls-row">
+            <div class="media-controls">
+              <!-- Thumbs Up / Like -->
+              <button class="circle-btn" id="likeBtn" aria-label="Like video">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path>
+                </svg>
+              </button>
+              
+              <!-- Sound Toggle -->
+              <button class="circle-btn" id="soundBtn" aria-label="Toggle audio">
+                <svg class="sound-icon-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                  <line x1="23" y1="9" x2="17" y2="15"></line>
+                  <line x1="17" y1="9" x2="23" y2="15"></line>
+                </svg>
+              </button>
+
+              <!-- Pause / Play -->
+              <button class="circle-btn" id="pauseBtn" aria-label="Pause playback">
+                <svg class="pause-icon" viewBox="0 0 24 24" fill="currentColor">
+                  <rect x="6" y="4" width="4" height="16" rx="1"></rect>
+                  <rect x="14" y="4" width="4" height="16" rx="1"></rect>
+                </svg>
+              </button>
+            </div>
+
+            <!-- Spotlight Badge -->
+            <div class="spotlight-badge" id="spotlightTag">
+              <span class="spotlight-dot"></span>
+              <span class="spotlight-text">Spotlight</span>
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- SECTION 1: Continue Watching - rendered by home.js from member state -->
+      <section class="content-row-section" id="continueWatchingSection" hidden>
+        <div class="section-header">
+          <h2 class="section-title">Continue Watching</h2>
+          <p class="section-subtitle">Resume where you left off in your executive learning</p>
+        </div>
+        <div class="cards-carousel" id="continueWatchingRow"></div>
+      </section>
+
+      <!-- SECTION 2: Disciplines - one row per discipline, rendered by home.js -->
+      <div id="disciplineRows"></div>
+
+      <!-- Empty state: nothing authored in the admin beta yet -->
+      <section class="content-row-section" id="homeEmptyState" hidden>
+        <div class="section-header">
+          <h2 class="section-title">No catalogue yet</h2>
+          <p class="section-subtitle">Create a discipline and upload a video in the admin beta, then reload this page.</p>
+        </div>
+        <a class="btn-secondary" href="../admin/" style="display:inline-block;text-align:center;">Open Admin Beta</a>
+      </section>
+
+      <!-- Video Player Modal Overlay -->
+      <div class="video-modal" id="videoModal" role="dialog" aria-modal="true" aria-hidden="true">
+        <div class="video-modal-backdrop" id="videoModalBackdrop"></div>
+        <div class="video-modal-sheet">
+          <div class="video-modal-header">
+            <div class="video-modal-text">
+              <span class="video-modal-tag">CONTINUUM STREAM</span>
+              <h3 class="video-modal-title" id="videoModalTitle">Video Title</h3>
+              <p class="video-modal-sub" id="videoModalSpeaker">Speaker</p>
+            </div>
+            <button class="video-modal-close" id="closeVideoBtn" aria-label="Close video player">✕</button>
+          </div>
+
+          <!-- Video Wrapper -->
+          <div class="video-frame-wrap">
+            <!-- No type hint: the browser detects the container, so .mov and .mp4 both work -->
+            <video id="mainVideoPlayer" playsinline controls preload="metadata" poster="">
+              <source id="videoSource" src="">
+              Your browser does not support the video tag.
+            </video>
+            <!-- Overlay fallback if local video file isn't uploaded yet -->
+            <div class="video-sample-fallback" id="videoFallbackPrompt">
+              <div class="fallback-icon">🎬</div>
+              <h4>Executive Video Ready</h4>
+              <p>Place your video file in <code>assets/videos/</code> or stream online.</p>
+              <button class="btn-sample-play" id="playTrailerClipBtn">Watch Vertical Trailer Clip</button>
+            </div>
+          </div>
+
+          <!-- Interactive Modal Buttons -->
+          <div class="video-modal-controls">
+            <button class="modal-btn" id="modalLikeAction">♥ Like</button>
+            <button class="modal-btn" id="modalListAction">＋ My List</button>
+            <button class="modal-btn" id="modalShareAction">↗ Share</button>
+          </div>
+        </div>
+      </div>
+
+    </main>
+
+    <!-- Floating Mobile Bottom Navigation Bar -->
+    <nav class="bottom-nav-container" aria-label="Mobile Navigation">
+      <div class="floating-nav">
+        
+        <!-- Home (Active) -->
+        <button class="nav-tab active" data-tab="home">
+          <div class="nav-icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+              <polyline points="9 22 9 12 15 12 15 22"></polyline>
+            </svg>
+          </div>
+          <span class="nav-label">Home</span>
+        </button>
+
+        <!-- Disciplines -->
+        <button class="nav-tab" data-tab="disciplines" data-href="../disciplines/">
+          <div class="nav-icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="7" height="7" rx="1.5"></rect>
+              <rect x="14" y="3" width="7" height="7" rx="1.5"></rect>
+              <rect x="14" y="14" width="7" height="7" rx="1.5"></rect>
+              <rect x="3" y="14" width="7" height="7" rx="1.5"></rect>
+            </svg>
+          </div>
+          <span class="nav-label">Disciplines</span>
+        </button>
+
+        <!-- Search -->
+        <button class="nav-tab" data-tab="search" data-href="../search/">
+          <div class="nav-icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </div>
+          <span class="nav-label">Search</span>
+        </button>
+
+        <!-- My Library -->
+        <button class="nav-tab" data-tab="library" data-href="../library/">
+          <div class="nav-icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+              <line x1="8" y1="7" x2="16" y2="7"></line>
+              <line x1="8" y1="11" x2="14" y2="11"></line>
+            </svg>
+          </div>
+          <span class="nav-label">My Library</span>
+        </button>
+
+      </div>
+    </nav>
+
+  </div>
+
+  <!-- Home page scripts: catalogue (static + admin content), member state, page -->
+  <script src="../assets/js/data/disciplines.js"></script>
+  <script src="../assets/js/content.js"></script>
+  <script src="../assets/js/data/catalogue.js"></script>
+  <!-- Member state (likes, saved titles, watch position) loads before the page -->
+  <script src="../assets/js/store.js"></script>
+  <script src="../assets/js/home.js"></script>
+  <!-- Navbar avatar dropdown; needs the session from auth.js above -->
+  <script src="../assets/js/user-menu.js"></script>
+</body>
+</html>
+
