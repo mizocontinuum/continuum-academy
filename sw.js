@@ -42,7 +42,6 @@ const SHELL = [
   "./assets/css/clips.css",
   "./assets/css/admin.css",
   "./assets/css/user-menu.css",
-  "./assets/css/install.css",
   "./assets/css/theme.css",
   "./assets/js/config.js",
   "./assets/js/auth.js",

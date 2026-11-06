@@ -459,127 +459,6 @@
     });
   }
 
-  /* ---------- INSTALL PROMPT ---------- */
-  /* The browser decides when an install may be offered and says so with
-     beforeinstallprompt. Until that fires there is nothing to suggest, so the
-     pill is built on demand instead of sitting in every page's markup.
-
-     It lives here because this is the one script all fourteen pages load: a
-     page added later gets the offer without anyone remembering to wire it up.
-     The stylesheet rides in on an injected <link> — style-src 'self' allows a
-     same-origin file, so no 'unsafe-inline' is needed to style this. */
-
-  const INSTALL_DISMISSED = "continuum.install.dismissed";
-  let installPrompt = null;
-
-  /* Already running as an installed app: offering to install it again is noise. */
-  function isStandalone() {
-    if (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches) return true;
-    return Boolean(window.navigator.standalone); /* iOS before it read display-mode */
-  }
-
-  function installDismissed() {
-    try {
-      return sessionStorage.getItem(INSTALL_DISMISSED) === "1";
-    } catch (error) {
-      return false; /* private mode blocks storage; showing the pill is harmless */
-    }
-  }
-
-  function rememberInstallDismissed() {
-    try {
-      sessionStorage.setItem(INSTALL_DISMISSED, "1");
-    } catch (error) {
-      /* same */
-    }
-  }
-
-  function showInstallPrompt() {
-    if (document.getElementById("installPrompt") || installDismissed()) return;
-
-    if (!document.getElementById("installStyles")) {
-      const link = document.createElement("link");
-      link.id = "installStyles";
-      link.rel = "stylesheet";
-      /* Same relative trick the worker registration uses: pages sit one level
-         below the root, the root page clamps at itself, so both resolve. */
-      link.href = new URL("../assets/css/install.css", document.baseURI).href;
-      document.head.appendChild(link);
-    }
-
-    const pill = document.createElement("div");
-    pill.id = "installPrompt";
-    pill.className = "install-prompt";
-
-    const cta = document.createElement("button");
-    cta.type = "button";
-    cta.className = "install-cta";
-    cta.innerHTML =
-      '<svg class="install-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"' +
-      ' stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
-      '<path d="M12 3v12"/><polyline points="7 10 12 15 17 10"/><path d="M4 20h16"/></svg>' +
-      "<span>Install app</span>";
-
-    const close = document.createElement("button");
-    close.type = "button";
-    close.className = "install-close";
-    close.setAttribute("aria-label", "Hide the install suggestion");
-    close.innerHTML =
-      '<svg class="install-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"' +
-      ' stroke-width="2" stroke-linecap="round" aria-hidden="true">' +
-      '<path d="M6 6l12 12"/><path d="M18 6L6 18"/></svg>';
-
-    cta.addEventListener("click", () => {
-      if (!installPrompt) return;
-      const deferred = installPrompt;
-      /* One prompt per event: the browser will not hand out a second chance. */
-      installPrompt = null;
-      deferred.prompt();
-      deferred.userChoice
-        .then((choice) => {
-          /* Accepting ends with appinstalled, which hides the pill; a refusal is
-             final for a while, so stop asking for the rest of this session. */
-          if (!choice || choice.outcome !== "accepted") rememberInstallDismissed();
-          hideInstallPrompt();
-        })
-        .catch(() => hideInstallPrompt());
-    });
-
-    close.addEventListener("click", () => {
-      rememberInstallDismissed();
-      hideInstallPrompt();
-    });
-
-    pill.appendChild(cta);
-    pill.appendChild(close);
-    document.body.appendChild(pill);
-  }
-
-  function hideInstallPrompt() {
-    const pill = document.getElementById("installPrompt");
-    if (pill) pill.hidden = true;
-  }
-
-  function wireInstallPrompt() {
-    if (isStandalone()) return;
-
-    window.addEventListener("beforeinstallprompt", (event) => {
-      event.preventDefault();
-      installPrompt = event;
-      /* auth.js runs while <head> is still parsing, so the body may not exist. */
-      if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", showInstallPrompt, { once: true });
-      } else {
-        showInstallPrompt();
-      }
-    });
-
-    window.addEventListener("appinstalled", () => {
-      installPrompt = null;
-      hideInstallPrompt();
-    });
-  }
-
   /* ---------- BOOT ---------- */
   /* Runs while <head> is parsing: signed-out visitors never see member content. */
   if (document.documentElement.hasAttribute("data-requires-auth") && !getSession()) {
@@ -593,7 +472,6 @@
   }
 
   registerServiceWorker();
-  wireInstallPrompt();
 
   window.ContinuumAuth = {
     config: CONFIG,
