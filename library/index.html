@@ -10,23 +10,23 @@
   <title>Continuum Academy - My Library</title>
 
   <!-- Theme preference loads before first paint so light mode never flashes dark -->
-  <script src="../assets/js/theme.js"></script>
+  <script src="../assets/js/core/theme.js"></script>
   <!-- Shared app shell (top bar, masthead, artwork, modal, bottom nav) -->
-  <link rel="stylesheet" href="../assets/css/home.css">
+  <link rel="stylesheet" href="../assets/css/pages/home.css">
   <!-- My Library page: dashboard, tabs, filter rows -->
-  <link rel="stylesheet" href="../assets/css/library.css">
+  <link rel="stylesheet" href="../assets/css/pages/library.css">
   <!-- Light-theme variable overrides, then the navbar user menu -->
-  <link rel="stylesheet" href="../assets/css/theme.css">
-  <link rel="stylesheet" href="../assets/css/user-menu.css">
+  <link rel="stylesheet" href="../assets/css/base/theme.css">
+  <link rel="stylesheet" href="../assets/css/components/user-menu.css">
   <!-- Installable on the home screen -->
   <link rel="manifest" href="../manifest.webmanifest">
   <link rel="apple-touch-icon" href="../assets/images/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="192x192" href="../assets/images/icon-192.png">
 
   <!-- Session guard: signed-out visitors are redirected before first paint -->
-  <script src="../assets/js/mobile.js"></script>
-  <script src="../assets/js/config.js"></script>
-  <script src="../assets/js/auth.js"></script>
+  <script src="../assets/js/core/mobile.js"></script>
+  <script src="../assets/js/core/config.js"></script>
+  <script src="../assets/js/core/auth.js"></script>
 </head>
 
 <body>
@@ -227,13 +227,13 @@
   <!-- Catalogue, library progress, page behaviour, then the shared player modal -->
   <script src="../assets/js/data/disciplines.js"></script>
   <script src="../assets/js/data/library.js"></script>
-  <script src="../assets/js/content.js"></script>
+  <script src="../assets/js/core/content.js"></script>
   <script src="../assets/js/data/catalogue.js"></script>
   <!-- Member state loads before the page: library.js folds it in at parse time -->
-  <script src="../assets/js/store.js"></script>
-  <script src="../assets/js/library.js"></script>
-  <script src="../assets/js/player.js"></script>
+  <script src="../assets/js/core/store.js"></script>
+  <script src="../assets/js/pages/library.js"></script>
+  <script src="../assets/js/core/player.js"></script>
   <!-- Navbar avatar dropdown; needs the session from auth.js above -->
-  <script src="../assets/js/user-menu.js"></script>
+  <script src="../assets/js/core/user-menu.js"></script>
 </body>
 </html>
