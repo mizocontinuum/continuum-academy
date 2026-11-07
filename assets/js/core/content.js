@@ -124,8 +124,8 @@ window.ContinuumContent = (function () {
       avatar: String(meta.avatar || "").trim() || "🎬",
       minutes: meta.minutes ? Number(meta.minutes) || null : null,
       tag: String(meta.tag || "").trim() || group.title.toUpperCase(),
-      art: String(meta.art || "").trim() || "bg-slate-a",
-      image: null,
+      art: String(meta.art || "").trim() || "bg-slate-b",
+      image: meta.image || null,
       video: null,
       fileId: null
     };
@@ -141,7 +141,7 @@ window.ContinuumContent = (function () {
 
     [
       "title", "highlight", "speaker", "role", "avatar", "tag", "art",
-      "minutes"
+      "minutes", "image"
     ].forEach((field) => {
       if (patch[field] !== undefined) video[field] = patch[field];
     });

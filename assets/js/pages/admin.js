@@ -59,7 +59,7 @@
               "</div>" +
             "</div>" +
             '<div class="item-actions">' +
-              '<button type="button" class="admin-btn small danger ghost" data-action="delete-group">Delete</button>' +
+              '<button type="button" class="admin-btn small danger" data-action="delete-group">Delete</button>' +
             "</div>" +
           "</li>"
         );
@@ -124,6 +124,61 @@
     showToast("Discipline \u201C" + result.group.title + "\u201D created");
   });
 
+  /* ---------- THUMBNAIL PROCESSING (Canvas 16:9 Compression) ---------- */
+  function processThumbnailFile(file) {
+    return new Promise((resolve) => {
+      if (!file) return resolve(null);
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement("canvas");
+          const MAX_W = 640;
+          const MAX_H = 360;
+          canvas.width = MAX_W;
+          canvas.height = MAX_H;
+          const ctx = canvas.getContext("2d");
+          const scale = Math.max(MAX_W / img.width, MAX_H / img.height);
+          const x = (MAX_W - img.width * scale) / 2;
+          const y = (MAX_H - img.height * scale) / 2;
+          ctx.drawImage(img, x, y, img.width * scale, img.height * scale);
+          resolve(canvas.toDataURL("image/jpeg", 0.82));
+        };
+        img.onerror = () => resolve(null);
+        img.src = e.target.result;
+      };
+      reader.onerror = () => resolve(null);
+      reader.readAsDataURL(file);
+    });
+  }
+
+  /* Form Thumbnail Picker & Live Preview */
+  const thumbInput = document.getElementById("videoThumbnail");
+  const thumbPreview = document.getElementById("thumbPreview");
+  const thumbPreviewImg = document.getElementById("thumbPreviewImg");
+  const clearThumbBtn = document.getElementById("clearThumbBtn");
+  let currentThumbnailDataUrl = null;
+
+  function resetThumbPreview() {
+    currentThumbnailDataUrl = null;
+    if (thumbInput) thumbInput.value = "";
+    if (thumbPreview) thumbPreview.hidden = true;
+    if (thumbPreviewImg) thumbPreviewImg.src = "";
+  }
+
+  thumbInput?.addEventListener("change", async function () {
+    const file = this.files && this.files[0];
+    if (!file) return;
+    const dataUrl = await processThumbnailFile(file);
+    if (dataUrl) {
+      currentThumbnailDataUrl = dataUrl;
+      if (thumbPreviewImg) thumbPreviewImg.src = dataUrl;
+      if (thumbPreview) thumbPreview.hidden = false;
+    }
+  });
+
+  clearThumbBtn?.addEventListener("click", resetThumbPreview);
+
   /* ---------- VIDEO LIST ---------- */
   const videoList = document.getElementById("videoList");
 
@@ -145,9 +200,15 @@
       .map(function (video) {
         const chip = video.fileId
           ? '<span class="file-chip has">\u25B6 file uploaded</span>'
-          : '<span class="file-chip missing">\u25D0 no file yet \u2014 card opens the ready state</span>';
+          : '<span class="file-chip missing">\u25D0 no file yet \u2014 ready state</span>';
+
+        const thumbImg = video.image
+          ? '<img src="' + escapeHtml(video.image) + '" class="video-mini-thumb" alt="Thumbnail">'
+          : '<div class="video-mini-thumb" style="display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:12px;">🎬</div>';
+
         return (
           '<li class="video-item" data-video="' + escapeHtml(video.id) + '">' +
+            thumbImg +
             '<div class="item-text">' +
               '<div class="item-name">' + escapeHtml(video.title) + "</div>" +
               '<div class="item-sub">' +
@@ -157,8 +218,9 @@
               chip +
             "</div>" +
             '<div class="item-actions">' +
-              '<button type="button" class="admin-btn small" data-action="upload">Upload</button>' +
-              '<button type="button" class="admin-btn small danger ghost" data-action="delete-video">Delete</button>' +
+              '<button type="button" class="admin-btn small" data-action="upload-thumb" title="Upload Thumbnail">Thumb</button>' +
+              '<button type="button" class="admin-btn small" data-action="upload" title="Upload Video File">Video</button>' +
+              '<button type="button" class="admin-btn small danger" data-action="delete-video">✕</button>' +
             "</div>" +
           "</li>"
         );
@@ -166,7 +228,27 @@
       .join("");
   }
 
-  /* Hidden input that powers the per-row Upload buttons */
+  /* Hidden input that powers row Thumbnail uploads */
+  const rowThumbInput = document.createElement("input");
+  rowThumbInput.type = "file";
+  rowThumbInput.accept = "image/png,image/jpeg,image/webp,image/jpg";
+  rowThumbInput.style.display = "none";
+  document.body.appendChild(rowThumbInput);
+  let rowThumbTarget = null;
+
+  rowThumbInput.addEventListener("change", async function () {
+    const file = this.files && this.files[0];
+    this.value = "";
+    if (!file || !rowThumbTarget) return;
+    const dataUrl = await processThumbnailFile(file);
+    if (dataUrl) {
+      Content.updateVideo(selectedGroupId, rowThumbTarget.videoId, { image: dataUrl });
+      renderVideos();
+      showToast("Thumbnail image updated");
+    }
+  });
+
+  /* Hidden input that powers row Video uploads */
   const rowFileInput = document.createElement("input");
   rowFileInput.type = "file";
   rowFileInput.accept = "video/mp4,video/webm";
@@ -198,6 +280,12 @@
     if (!item) return;
     const videoId = item.dataset.video;
 
+    if (event.target.closest('[data-action="upload-thumb"]')) {
+      rowThumbTarget = { videoId: videoId };
+      rowThumbInput.click();
+      return;
+    }
+
     if (event.target.closest('[data-action="upload"]')) {
       rowTarget = { videoId: videoId };
       rowFileInput.click();
@@ -205,7 +293,7 @@
     }
 
     if (event.target.closest('[data-action="delete-video"]')) {
-      if (!window.confirm("Delete this video and its uploaded file?")) return;
+      if (!window.confirm("Delete this video and its uploaded files?")) return;
       const result = Content.removeVideo(selectedGroupId, videoId);
       if (result.error) return showToast(result.error);
       renderVideos();
@@ -221,21 +309,22 @@
 
     const fileInput = document.getElementById("videoFile");
     const file = fileInput && fileInput.files && fileInput.files[0];
+    const thumbData = currentThumbnailDataUrl;
 
     const result = Content.addVideo(selectedGroupId, {
       title: document.getElementById("videoTitle")?.value,
       highlight: document.getElementById("videoHighlight")?.value,
       speaker: document.getElementById("videoSpeaker")?.value,
-      role: document.getElementById("videoRole")?.value,
       minutes: document.getElementById("videoMinutes")?.value,
       tag: document.getElementById("videoTag")?.value,
-      avatar: document.getElementById("videoAvatar")?.value,
-      art: document.getElementById("videoArt")?.value
+      art: document.getElementById("videoArt")?.value || "bg-slate-b",
+      image: thumbData
     });
     if (result.error) return showToast(result.error);
 
     const done = function () {
       this.reset();
+      resetThumbPreview();
       renderGroups();
       renderVideos();
       showToast("Video added");
@@ -260,6 +349,7 @@
       selectedGroupId = null;
       const section = document.getElementById("videoSection");
       if (section) section.hidden = true;
+      resetThumbPreview();
       renderGroups();
       renderVideos();
       showToast("All content wiped");

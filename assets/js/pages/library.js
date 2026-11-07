@@ -104,8 +104,13 @@
 
   /* The rendered artwork doubles as the thumbnail until real posters are added */
   function artworkMarkup(video) {
+    const image = video.image
+      ? '<img src="' + escapeHtml(video.image) + '" alt="' + escapeHtml(video.title || "") + '" class="thumb-img" onerror="this.remove()">'
+      : "";
+
     return (
-      '<div class="thumb-fallback ' + escapeHtml(video.art || "bg-slate-a") + '">' +
+      image +
+      '<div class="thumb-fallback ' + escapeHtml(video.art || "bg-slate-b") + '">' +
         '<div class="thumb-top-logos">' +
           '<span class="thumb-mansmith">MANSMITH</span>' +
           '<span class="thumb-continuum">CONTINUUM</span>' +

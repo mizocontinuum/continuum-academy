@@ -67,3 +67,15 @@ html[data-theme="light"] .card-caption {
 html[data-theme="light"] .section-subtitle {
   color: var(--text-sub);
 }
+
+/* Universal Card Image Thumbnail */
+.thumb-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  z-index: 2;
+  border-radius: inherit;
+}
