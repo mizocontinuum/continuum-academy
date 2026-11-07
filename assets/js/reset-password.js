@@ -1,6 +1,5 @@
 // Reset password -> ContinuumAuth.updatePassword
-// In Supabase mode the recovery token arrives in the URL and the client turns it
-// into a short-lived session, so the form only has to write the new secret.
+// Updates the member secret for the current local session.
 const resetForm = document.getElementById('resetForm');
 const resetError = document.getElementById('resetError');
 const resetSubmit = document.getElementById('resetSubmit');

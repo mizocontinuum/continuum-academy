@@ -10,7 +10,7 @@
    with Range requests for seeking, and in production they arrive from a signed
    streaming URL instead of this origin. */
 
-const VERSION = "continuum-v6";
+const VERSION = "continuum-v10";
 
 const SHELL = [
   "./",
@@ -44,6 +44,7 @@ const SHELL = [
   "./assets/css/user-menu.css",
   "./assets/css/theme.css",
   "./assets/js/config.js",
+  "./assets/js/mobile.js",
   "./assets/js/auth.js",
   "./assets/js/store.js",
   "./assets/js/theme.js",

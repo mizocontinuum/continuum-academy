@@ -1,0 +1,27 @@
+{
+  "name": "continuum-academy",
+  "version": "1.0.0",
+  "description": "Continuum Academy — Executive Online-Learning Platform",
+  "private": true,
+  "scripts": {
+    "serve": "python3 .vscode/serve.py 8080",
+    "cap:add:ios": "cap add ios",
+    "cap:add:android": "cap add android",
+    "cap:sync": "cap sync",
+    "cap:open:ios": "cap open ios",
+    "cap:open:android": "cap open android"
+  },
+  "dependencies": {
+    "@capacitor/app": "^6.0.0",
+    "@capacitor/core": "^6.0.0",
+    "@capacitor/haptics": "^6.0.0",
+    "@capacitor/keyboard": "^6.0.0",
+    "@capacitor/status-bar": "^6.0.0"
+  },
+  "devDependencies": {
+    "@capacitor/android": "^6.0.0",
+    "@capacitor/cli": "^6.0.0",
+    "@capacitor/ios": "^6.0.0"
+  }
+}
+

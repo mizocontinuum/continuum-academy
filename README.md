@@ -4,8 +4,7 @@ An executive online-learning platform delivered as a **100% static, installable 
 
 ## How it runs
 
-- **Demo mode (current):** there is no running backend. Sessions, likes, saved titles, and watch position live client-side in `localStorage` / `IndexedDB`. Any email + an 8-character password signs in; no password is stored.
-- **Supabase mode (scaffolded, off):** the schema exists in [`supabase/migrations/0001_init.sql`](supabase/migrations/0001_init.sql) and every table is guarded by row-level security. To switch on, see [assets/js/config.js](assets/js/config.js): vendor the `supabase-js` bundle, fill `supabaseUrl` + `supabaseAnonKey`, and set `mode: "supabase"`.
+The application is **100% client-side**. Sessions, likes, saved titles, and watch position live client-side in `localStorage` and `IndexedDB`. Any valid email + an 8-character password signs in.
 
 ## Project structure
 
@@ -38,9 +37,6 @@ Pages are **one folder deep, one folder per route** so each URL is clean (`/logi
 │   │   └── data/           # catalogue.js, disciplines.js, library.js
 │   ├── images/             # Icons, logos, thumbnails
 │   └── videos/             # Sample / uploaded video files
-│
-├── supabase/
-│   └── migrations/         # 0001_init.sql (schema + RLS)
 │
 └── .vscode/                # Local dev server (serve.py) + debug configs
 ```

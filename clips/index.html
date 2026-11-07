@@ -17,6 +17,7 @@
   <link rel="icon" type="image/png" sizes="192x192" href="../assets/images/icon-192.png">
 
   <!-- Session guard: signed-out visitors are redirected before first paint -->
+  <script src="../assets/js/mobile.js"></script>
   <script src="../assets/js/config.js"></script>
   <script src="../assets/js/auth.js"></script>
 </head>
@@ -30,7 +31,7 @@
 
   <!-- Mobile Bottom Navigation Bar -->
   <nav class="bottom-nav" aria-label="Primary Navigation">
-    <button class="nav-item active" data-nav="home">
+    <button class="nav-item" data-nav="home">
       <span class="nav-icon">⌂</span>
       <span class="nav-label">Home</span>
     </button>
@@ -38,7 +39,7 @@
       <span class="nav-icon">🔍</span>
       <span class="nav-label">Discover</span>
     </button>
-    <button class="nav-item" data-nav="clips">
+    <button class="nav-item active" data-nav="clips">
       <span class="nav-icon">▶</span>
       <span class="nav-label">Clips</span>
     </button>

@@ -62,8 +62,7 @@
 }
 
 /* ---------- DEMO NOTICE ---------- */
-/* Tells the reader plainly that the session is local, so nobody mistakes the
-   prototype for a working account system. Hidden in Supabase mode. */
+/* Tells the reader plainly that the session is local. */
 .auth-note {
   margin-top: 18px;
   border: 1px dashed var(--line-strong);

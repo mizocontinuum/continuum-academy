@@ -4,11 +4,6 @@
    browser database that holds large blobs — localStorage would burst at a
    few MB).
 
-   This is the beta seam, not the backend. When Supabase arrives:
-     groups()  -> select from the disciplines + videos tables
-     videoURL() -> signed playback URL from Mux / Cloudflare Stream
-   Every page keeps calling ContinuumData and never learns the difference.
-
    Shape matches assets/js/data/disciplines.js exactly, with two extra fields:
      id       on each video, so an upload can be found and replaced
      fileId   present when a video file has been uploaded for that row

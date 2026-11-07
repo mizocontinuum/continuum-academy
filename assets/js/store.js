@@ -4,11 +4,7 @@
 
    Keyed by the session id from ContinuumAuth, so two accounts on the same
    device never see each other's progress. A signed-out page simply gets empty
-   results instead of throwing.
-
-   This is the seam where the backend arrives. Swap the bodies of the methods
-   for the watch_progress / saved_videos queries in
-   supabase/migrations/0001_init.sql and every page keeps working. */
+   results instead of throwing. */
 
 window.ContinuumStore = (function () {
   "use strict";

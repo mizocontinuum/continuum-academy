@@ -18,6 +18,7 @@
   <link rel="icon" type="image/png" sizes="192x192" href="../assets/images/icon-192.png">
 
   <!-- Session guard: signed-out visitors are redirected before first paint -->
+  <script src="../assets/js/mobile.js"></script>
   <script src="../assets/js/config.js"></script>
   <script src="../assets/js/auth.js"></script>
 </head>
@@ -141,8 +142,7 @@
     <section class="admin-section admin-note">
       <h2 class="admin-heading">About this beta</h2>
       <p>Content and uploads live <b>on this device only</b> (localStorage +
-         IndexedDB). Clearing site data or using another phone won't show it —
-         the Supabase + streaming cutover makes it real for every member.</p>
+         IndexedDB). Clearing site data removes it.</p>
       <button type="button" class="admin-btn danger ghost" id="wipeContent">Wipe all content</button>
     </section>
 

@@ -5,9 +5,7 @@
      disciplines.js  the catalogue, grouped by discipline
      library.js      the member's rows, joined to the catalogue by title
 
-   When the catalogue moves into Postgres, replace the bodies here with the
-   Supabase queries. Pages keep calling ContinuumData and never learn the
-   difference. Load order matters: this file after the data it reads.
+   Load order matters: this file after the data it reads.
 
    Every method tolerates a missing data file, so a page can include this
    without also including disciplines.js. */

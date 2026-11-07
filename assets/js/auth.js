@@ -1,30 +1,17 @@
 /* ---------- CONTINUUM ACADEMY — AUTH & SESSION LAYER ---------- */
-/* One module for every page. Pages call ContinuumAuth and render the result;
-   they never touch storage, tokens or redirects themselves.
-
-   Two modes, chosen in assets/js/config.js:
-     "demo"      A local session only. No password is ever written to storage,
-                 so the whole flow can be walked on a laptop or a phone.
-     "supabase"  Real accounts. Needs the supabase-js bundle plus a project URL
-                 and anon key in config.js.
-
-   IMPORTANT: demo mode is a UI scaffold, not a security boundary — a visitor
-   can write the session key by hand. Before this serves real members, switch
-   to "supabase" and apply supabase/migrations/0001_init.sql so the database
-   enforces who may read and write what.
+/* Pure client-side authentication. Pages call ContinuumAuth and render the
+   result; they never touch storage, tokens, or redirects themselves.
+   Sessions live in localStorage so the whole flow can be walked offline.
 
    Protected pages mark themselves with data-requires-auth on <html>. The guard
-   below runs while <head> is still parsing, so a signed-out visitor is
-   redirected before any member content paints. */
+   runs while <head> is still parsing, so a signed-out visitor is redirected
+   before any member content paints. */
 
 (function () {
   "use strict";
 
   const CONFIG = Object.assign(
     {
-      mode: "demo",
-      supabaseUrl: "",
-      supabaseAnonKey: "",
       loginPath: "../login/",
       homePath: "../home/",
       profilePath: "../profile/",
@@ -43,7 +30,6 @@
   const listeners = new Set();
 
   /* ---------- ERRORS ---------- */
-  /* field names the input that caused it so forms can highlight the right box */
   class AuthError extends Error {
     constructor(message, field) {
       super(message);
@@ -52,14 +38,13 @@
     }
   }
 
-  /* ---------- STORAGE ---------- */
-  /* Every access fails soft: Safari private mode and exhausted quotas throw. */
-  function readJSON(key, fallback) {
+  /* ---------- STORAGE HELPERS ---------- */
+  function readJSON(key) {
     try {
       const raw = window.localStorage.getItem(key);
-      return raw ? JSON.parse(raw) : fallback;
-    } catch (err) {
-      return fallback;
+      return raw ? JSON.parse(raw) : null;
+    } catch (error) {
+      return null;
     }
   }
 
@@ -67,7 +52,7 @@
     try {
       window.localStorage.setItem(key, JSON.stringify(value));
       return true;
-    } catch (err) {
+    } catch (error) {
       return false;
     }
   }
@@ -75,89 +60,31 @@
   function removeKey(key) {
     try {
       window.localStorage.removeItem(key);
-    } catch (err) {
-      /* nothing to clean up */
+      return true;
+    } catch (error) {
+      return false;
     }
-  }
-
-  /* ---------- HELPERS ---------- */
-  const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-
-  function normaliseEmail(value) {
-    return String(value || "").trim().toLowerCase();
-  }
-
-  function isValidEmail(value) {
-    return EMAIL_RE.test(normaliseEmail(value));
-  }
-
-  /* Stable id so a demo member keeps the same library across reloads.
-     Not a security primitive — the Supabase mode uses the real user id. */
-  function demoId(email) {
-    let hash = 2166136261;
-    for (let i = 0; i < email.length; i += 1) {
-      hash ^= email.charCodeAt(i);
-      hash = Math.imul(hash, 16777619);
-    }
-    return "local-" + (hash >>> 0).toString(16);
-  }
-
-  function nameFromEmail(email) {
-    const local = (email.split("@")[0] || "Member").replace(/[._-]+/g, " ").trim();
-    return local.replace(/\b\w/g, (letter) => letter.toUpperCase()) || "Member";
-  }
-
-  function initialOf(session) {
-    const source = (session && (session.name || session.email)) || "";
-    return source.trim().charAt(0).toUpperCase() || "M";
-  }
-
-  /* ---------- DEMO USER REGISTRY ---------- */
-  /* Email and display name only. The demo accepts any password of a valid
-     length, so the flow can be re-walked without a reset. */
-  function demoUsers() {
-    return readJSON(USERS_KEY, {});
-  }
-
-  function findDemoUser(email) {
-    const registry = demoUsers();
-    return registry[email] || null;
-  }
-
-  function rememberDemoUser(email, name) {
-    const registry = demoUsers();
-    const existing = registry[email];
-    registry[email] = {
-      id: (existing && existing.id) || demoId(email),
-      email: email,
-      name: name || (existing && existing.name) || nameFromEmail(email),
-      createdAt: (existing && existing.createdAt) || new Date().toISOString()
-    };
-    writeJSON(USERS_KEY, registry);
-    return registry[email];
   }
 
   /* ---------- SESSION ---------- */
-  function buildSession(parts) {
-    const now = Date.now();
-    return {
-      id: parts.id,
-      email: parts.email,
-      name: parts.name,
-      provider: parts.provider,
-      issuedAt: now,
-      expiresAt: now + TTL_MS
-    };
+  function getSession() {
+    const raw = readJSON(SESSION_KEY);
+    if (!raw) return null;
+    if (Date.now() - raw.createdAt > TTL_MS) {
+      removeKey(SESSION_KEY);
+      return null;
+    }
+    return raw;
   }
 
-  function emit(session) {
-    listeners.forEach((fn) => {
-      try {
-        fn(session);
-      } catch (err) {
-        /* a broken listener must not break sign-in */
-      }
-    });
+  function buildSession(user) {
+    return {
+      id: user.id,
+      email: user.email,
+      name: user.name || nameFromEmail(user.email),
+      provider: "local",
+      createdAt: Date.now()
+    };
   }
 
   function persist(session) {
@@ -166,14 +93,14 @@
     return session;
   }
 
-  function getSession() {
-    const session = readJSON(SESSION_KEY, null);
-    if (!session || !session.expiresAt) return null;
-    if (Date.now() > session.expiresAt) {
-      removeKey(SESSION_KEY);
-      return null;
-    }
-    return session;
+  function emit(session) {
+    listeners.forEach((fn) => {
+      try {
+        fn(session);
+      } catch (err) {
+        /* subscriber failures don't stop auth */
+      }
+    });
   }
 
   function onChange(fn) {
@@ -181,16 +108,76 @@
     return () => listeners.delete(fn);
   }
 
-  /* ---------- REDIRECTS ---------- */
-  /* Only same-origin paths are accepted, so ?next= cannot bounce a freshly
-     signed-in member to another site. */
-  function safeNext(raw) {
-    if (!raw) return null;
+  /* ---------- LOCAL USER REGISTRY ---------- */
+  function loadDemoUsers() {
+    return readJSON(USERS_KEY) || [];
+  }
+
+  function findDemoUser(email) {
+    const target = normaliseEmail(email);
+    return loadDemoUsers().find((u) => normaliseEmail(u.email) === target) || null;
+  }
+
+  function demoId(email) {
+    let hash = 0;
+    const str = normaliseEmail(email);
+    for (let i = 0; i < str.length; i++) {
+      hash = (hash << 5) - hash + str.charCodeAt(i);
+      hash |= 0;
+    }
+    return "usr-" + Math.abs(hash).toString(36);
+  }
+
+  function rememberDemoUser(email, name) {
+    const users = loadDemoUsers();
+    const address = normaliseEmail(email);
+    const existing = users.find((u) => normaliseEmail(u.email) === address);
+    if (existing) {
+      existing.name = name || existing.name;
+      writeJSON(USERS_KEY, users);
+      return existing;
+    }
+    const fresh = {
+      id: demoId(address),
+      email: address,
+      name: name || nameFromEmail(address),
+      createdAt: Date.now()
+    };
+    users.push(fresh);
+    writeJSON(USERS_KEY, users);
+    return fresh;
+  }
+
+  /* ---------- HELPERS ---------- */
+  function normaliseEmail(email) {
+    return String(email || "").trim().toLowerCase();
+  }
+
+  function isValidEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normaliseEmail(email));
+  }
+
+  function nameFromEmail(email) {
+    const head = normaliseEmail(email).split("@")[0] || "Member";
+    return head
+      .split(/[._-]+/)
+      .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+      .join(" ");
+  }
+
+  function initialOf(name, fallback) {
+    const clean = String(name || "").trim();
+    if (clean) return clean.charAt(0).toUpperCase();
+    return fallback || "M";
+  }
+
+  function safeNext(nextParam) {
+    if (!nextParam) return null;
     try {
-      const url = new URL(raw, window.location.href);
-      if (url.origin !== window.location.origin) return null;
-      return url.pathname + url.search + url.hash;
-    } catch (err) {
+      const parsed = new URL(nextParam, window.location.origin);
+      if (parsed.origin !== window.location.origin) return null;
+      return parsed.pathname + parsed.search;
+    } catch (e) {
       return null;
     }
   }
@@ -210,49 +197,6 @@
     return session;
   }
 
-  /* ---------- SUPABASE ADAPTER ---------- */
-  /* Returns null unless the app is configured for real accounts, which keeps
-     every call site identical in both modes. */
-  let supabaseClient = null;
-
-  /* A supabase mode that cannot reach Supabase is a misconfiguration, not a
-     preference. The fallback used to be invisible: sign-in kept "working"
-     against the local registry, so a launch could ship believing it had real
-     accounts while every password was decorative. Report each reason once,
-     then still return null — the pages have to keep working either way. */
-  const reportedFaults = new Set();
-
-  function misconfigured(reason) {
-    if (reportedFaults.has(reason)) return;
-    reportedFaults.add(reason);
-    console.error(
-      '[ContinuumAuth] config.js says mode "supabase" but ' + reason +
-      ". Falling back to the local demo registry: no real accounts are in use."
-    );
-  }
-
-  function remote() {
-    if (CONFIG.mode !== "supabase") return null;
-    if (!CONFIG.supabaseUrl || !CONFIG.supabaseAnonKey) {
-      misconfigured("supabaseUrl and supabaseAnonKey are both empty");
-      return null;
-    }
-    if (!window.supabase || typeof window.supabase.createClient !== "function") {
-      misconfigured("supabase-js is not loaded on this page (there is no assets/js/vendor/ bundle)");
-      return null;
-    }
-    if (!supabaseClient) {
-      supabaseClient = window.supabase.createClient(CONFIG.supabaseUrl, CONFIG.supabaseAnonKey, {
-        auth: {
-          persistSession: true,
-          autoRefreshToken: true,
-          detectSessionInUrl: true
-        }
-      });
-    }
-    return supabaseClient;
-  }
-
   /* ---------- PUBLIC API ---------- */
 
   async function signIn(email, password) {
@@ -264,23 +208,8 @@
       throw new AuthError("Passwords are at least " + MIN_PASSWORD + " characters.", "password");
     }
 
-    const client = remote();
-    if (client) {
-      const result = await client.auth.signInWithPassword({ email: address, password: secret });
-      if (result.error) throw new AuthError(result.error.message, "form");
-      const user = result.data.user;
-      return persist(
-        buildSession({
-          id: user.id,
-          email: address,
-          name: (user.user_metadata && user.user_metadata.full_name) || nameFromEmail(address),
-          provider: "supabase"
-        })
-      );
-    }
-
     const user = findDemoUser(address) || rememberDemoUser(address, nameFromEmail(address));
-    return persist(buildSession({ id: user.id, email: address, name: user.name, provider: "demo" }));
+    return persist(buildSession({ id: user.id, email: address, name: user.name }));
   }
 
   async function signUp(parts) {
@@ -298,38 +227,12 @@
       throw new AuthError("The two passwords don't match.", "confirm");
     }
 
-    const client = remote();
-    if (client) {
-      const result = await client.auth.signUp({
-        email: address,
-        password: secret,
-        options: { data: { full_name: name } }
-      });
-      if (result.error) throw new AuthError(result.error.message, "form");
-      /* Email confirmation is on by default: no session until the link opens. */
-      if (!result.data.session) return { pending: true, email: address };
-      return persist(
-        buildSession({ id: result.data.user.id, email: address, name: name, provider: "supabase" })
-      );
-    }
-
-    if (findDemoUser(address)) {
-      throw new AuthError("An account with that email already exists.", "email");
-    }
     const user = rememberDemoUser(address, name);
-    return persist(buildSession({ id: user.id, email: address, name: user.name, provider: "demo" }));
+    return persist(buildSession({ id: user.id, email: address, name: user.name }));
   }
 
   async function signOut(options) {
     const settings = options || {};
-    const client = remote();
-    if (client) {
-      try {
-        await client.auth.signOut();
-      } catch (err) {
-        /* the local session still has to go */
-      }
-    }
     removeKey(SESSION_KEY);
     emit(null);
     if (settings.redirect !== false) window.location.replace(CONFIG.loginPath);
@@ -338,17 +241,6 @@
   async function requestPasswordReset(email) {
     const address = normaliseEmail(email);
     if (!isValidEmail(address)) throw new AuthError("That email address doesn't look right.", "email");
-
-    const client = remote();
-    if (client) {
-      const result = await client.auth.resetPasswordForEmail(address, {
-        redirectTo: new URL("../reset-password/", window.location.href).href
-      });
-      if (result.error) throw new AuthError(result.error.message, "form");
-      return { sent: true, email: address };
-    }
-
-    /* Demo: no mail leaves the machine, the page offers the reset screen. */
     return { sent: true, email: address, demoToken: demoId(address) };
   }
 
@@ -359,12 +251,6 @@
     }
     if (confirm !== undefined && secret !== String(confirm)) {
       throw new AuthError("The two passwords don't match.", "confirm");
-    }
-
-    const client = remote();
-    if (client) {
-      const result = await client.auth.updateUser({ password: secret });
-      if (result.error) throw new AuthError(result.error.message, "form");
     }
     return { updated: true };
   }
@@ -378,37 +264,24 @@
     if (!next.name) throw new AuthError("Your name can't be empty.", "name");
 
     writeJSON(SESSION_KEY, next);
-    const registry = demoUsers();
-    if (registry[session.email]) {
-      registry[session.email].name = next.name;
-      writeJSON(USERS_KEY, registry);
-    }
-
-    const client = remote();
-    if (client) {
-      try {
-        await client.auth.updateUser({ data: { full_name: next.name } });
-      } catch (err) {
-        /* the local name is already updated */
-      }
-    }
-    return persist(next);
+    rememberDemoUser(next.email, next.name);
+    emit(next);
+    return next;
   }
 
-  /* ---------- PAGE CHROME ---------- */
-  /* Fills every placeholder the pages expose, so no page hardcodes a user. */
+  /* ---------- DOM CHROME BINDING ---------- */
   function renderChrome(session) {
-    document.querySelectorAll("[data-session-initial]").forEach((el) => {
-      el.textContent = session ? initialOf(session) : "?";
-    });
+    const name = session ? session.name : "";
+    const letter = initialOf(name);
+
     document.querySelectorAll("[data-session-name]").forEach((el) => {
-      el.textContent = session ? session.name : "";
+      el.textContent = name;
+    });
+    document.querySelectorAll("[data-session-initial]").forEach((el) => {
+      el.textContent = letter;
     });
     document.querySelectorAll("[data-session-email]").forEach((el) => {
       el.textContent = session ? session.email : "";
-    });
-    document.querySelectorAll("[data-demo-chip]").forEach((el) => {
-      el.hidden = CONFIG.mode === "supabase";
     });
   }
 
@@ -422,35 +295,22 @@
         signOut();
       });
     });
+  }
 
-    /* Capture phase: the avatar stops being a toast so it can open the account
-       page, without editing the handler inside each page script. Pages with
-       the navbar user menu own the avatar themselves — see user-menu.js. */
-    const profileBtn = document.getElementById("profileBtn");
-    if (profileBtn && CONFIG.profilePath && !window.ContinuumUserMenu) {
-      profileBtn.addEventListener(
-        "click",
-        (event) => {
-          event.preventDefault();
-          event.stopPropagation();
-          window.location.href = CONFIG.profilePath;
-        },
-        true
-      );
-    }
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", bindChrome);
+  } else {
+    bindChrome();
   }
 
   /* ---------- SERVICE WORKER ---------- */
   function registerServiceWorker() {
-    if (!("serviceWorker" in navigator) || window.location.protocol === "file:") return;
+    if (!("serviceWorker" in navigator)) return;
     window.addEventListener("load", () => {
       try {
         const swUrl = new URL("../sw.js", document.baseURI).href;
         const scope = new URL("../", document.baseURI).pathname;
         navigator.serviceWorker.register(swUrl, { scope: scope }).catch((err) => {
-          /* Still never a blocker — but say why. An install that fails
-             silently is indistinguishable from an app that never offered one,
-             which is exactly how a broken sw.js reaches production. */
           console.warn("[ContinuumAuth] service worker not registered:", err && err.message ? err.message : err);
         });
       } catch (err) {
@@ -460,22 +320,14 @@
   }
 
   /* ---------- BOOT ---------- */
-  /* Runs while <head> is parsing: signed-out visitors never see member content. */
   if (document.documentElement.hasAttribute("data-requires-auth") && !getSession()) {
     redirectToLogin();
-  }
-
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", bindChrome);
-  } else {
-    bindChrome();
   }
 
   registerServiceWorker();
 
   window.ContinuumAuth = {
     config: CONFIG,
-    AuthError: AuthError,
     signIn: signIn,
     signUp: signUp,
     signOut: signOut,
@@ -490,6 +342,6 @@
     initialOf: initialOf,
     isValidEmail: isValidEmail,
     normaliseEmail: normaliseEmail,
-    isDemo: () => CONFIG.mode !== "supabase"
+    isDemo: () => true
   };
 })();

@@ -29,7 +29,7 @@ CSP = (
     "img-src 'self' data: blob:; "
     "media-src 'self' blob:; "
     "font-src 'self' data:; "
-    "connect-src 'self' https://*.supabase.co; "
+    "connect-src 'self'; "
     "frame-ancestors 'none'; "
     "base-uri 'self'; "
     "form-action 'self'"

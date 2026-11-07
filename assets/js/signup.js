@@ -64,14 +64,6 @@ if (signupForm) {
     try {
       const result = await ContinuumAuth.signUp(values);
 
-      // Supabase with email confirmation on: no session until the link is opened
-      if (result && result.pending) {
-        signupForm.reset();
-        showToast('Check your inbox to confirm your email');
-        showError('Account created. Open the confirmation link we sent to ' + result.email + '.', 'form');
-        return;
-      }
-
       showToast('Account created — welcome to the cockpit');
       setTimeout(() => {
         window.location.replace(ContinuumAuth.config.homePath);

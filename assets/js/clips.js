@@ -121,9 +121,17 @@ navItems.forEach(item => {
       window.location.href = '../home/';
       return;
     }
-    navItems.forEach(nav => nav.classList.remove('active'));
-    item.classList.add('active');
-    const label = item.querySelector('.nav-label')?.textContent || 'Tab';
-    say(`${label} tab selected`);
+    if (item.dataset.nav === 'search') {
+      window.location.href = '../explore/';
+      return;
+    }
+    if (item.dataset.nav === 'library') {
+      window.location.href = '../library/';
+      return;
+    }
+    if (item.dataset.nav === 'clips') {
+      feed.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
   });
 });
