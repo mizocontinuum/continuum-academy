@@ -155,10 +155,10 @@
               </button>
             </div>
 
-            <!-- Spotlight Badge -->
+            <!-- Spotlight / 1m Clip Badge -->
             <div class="spotlight-badge" id="spotlightTag">
               <span class="spotlight-dot"></span>
-              <span class="spotlight-text">Spotlight</span>
+              <span class="spotlight-text">1m Highlight</span>
             </div>
           </div>
 
@@ -175,6 +175,16 @@
         <div class="cards-carousel" id="continueWatchingRow"></div>
       </section>
 
+      <!-- SECTION: Top 10 Masterclasses (Ranked 1 to 10) -->
+      <section class="content-row-section" id="topRankedSection">
+        <div class="section-header">
+          <span class="section-badge">TOP 10</span>
+          <h2 class="section-title">Top 10 Masterclasses Today</h2>
+          <p class="section-subtitle">The most-watched executive masterclasses this week</p>
+        </div>
+        <div class="cards-carousel ranked-carousel" id="topRankedRow"></div>
+      </section>
+
       <!-- SECTION 2: Disciplines - one row per discipline, rendered by home.js -->
       <div id="disciplineRows"></div>
 
@@ -186,40 +196,265 @@
         </div>
       </section>
 
-      <!-- Video Player Modal Overlay -->
+      <!-- Video Player Modal Overlay (Executive Detail Sheet matching Picture 2) -->
       <div class="video-modal" id="videoModal" role="dialog" aria-modal="true" aria-hidden="true">
         <div class="video-modal-backdrop" id="videoModalBackdrop"></div>
         <div class="video-modal-sheet">
-          <div class="video-modal-header">
-            <div class="video-modal-text">
-              <span class="video-modal-tag">CONTINUUM STREAM</span>
-              <h3 class="video-modal-title" id="videoModalTitle">Video Title</h3>
-              <p class="video-modal-sub" id="videoModalSpeaker">Speaker</p>
-            </div>
-            <button class="video-modal-close" id="closeVideoBtn" aria-label="Close video player">✕</button>
-          </div>
 
-          <!-- Video Wrapper -->
+          <!-- Top Video Frame with Navigation & Branding -->
           <div class="video-frame-wrap">
-            <!-- No type hint: the browser detects the container, so .mov and .mp4 both work -->
+            <div class="video-frame-top-bar">
+              <button class="frame-back-btn" id="frameBackBtn" aria-label="Close sheet">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+                <div class="frame-branding">
+                  <span class="frame-brand-mansmith">MANSMITH</span>
+                  <span class="frame-brand-continuum">CONTINUUM</span>
+                </div>
+              </button>
+              <button class="video-modal-close" id="closeVideoBtn" aria-label="Close video player">✕</button>
+            </div>
+
+            <!-- Video Player -->
             <video id="mainVideoPlayer" playsinline controls preload="metadata" poster="">
               <source id="videoSource" src="">
               Your browser does not support the video tag.
             </video>
-            <!-- Overlay fallback if local video file isn't uploaded yet -->
+
+            <!-- Fallback if no file uploaded -->
             <div class="video-sample-fallback" id="videoFallbackPrompt">
               <div class="fallback-icon">🎬</div>
-              <h4>Executive Video Ready</h4>
+              <h4>Executive Masterclass Ready</h4>
               <p>Place your video file in <code>assets/videos/</code> or stream online.</p>
               <button class="btn-sample-play" id="playTrailerClipBtn">Watch Vertical Trailer Clip</button>
             </div>
           </div>
 
-          <!-- Interactive Modal Buttons -->
-          <div class="video-modal-controls">
-            <button class="modal-btn" id="modalLikeAction">♥ Like</button>
-            <button class="modal-btn" id="modalListAction">＋ My List</button>
-            <button class="modal-btn" id="modalShareAction">↗ Share</button>
+          <!-- Scrollable Sheet Body -->
+          <div class="sheet-body">
+            
+            <!-- Category Tag / Eyebrow -->
+            <div class="sheet-eyebrow" id="modalTag">Marketing Discipline</div>
+
+            <!-- Masterclass Headline -->
+            <h2 class="sheet-headline" id="videoModalTitle">Video Title</h2>
+
+            <!-- Meta row: Match %, Duration, HD, Category -->
+            <div class="sheet-meta-row">
+              <span class="sheet-match-chip" id="modalMatch">89% Match</span>
+              <span class="sheet-meta-chip" id="modalDuration">27m</span>
+              <span class="sheet-badge-hd">HD</span>
+              <span class="sheet-meta-chip" id="modalCategory">Entrepreneurship</span>
+            </div>
+
+            <!-- Primary Action Button: Unlock Video Access / Play Video -->
+            <button class="sheet-primary-btn" id="sheetPrimaryCta">
+              <span class="sheet-cta-sparkle">✦</span>
+              <span id="sheetCtaText">Unlock Video Access</span>
+            </button>
+
+            <div class="sheet-divider"></div>
+
+            <!-- Course Overview & Executive Summary -->
+            <div class="sheet-section-block">
+              <h4 class="sheet-subhead" id="sheetSubhead">Insight Without Action Fails</h4>
+              <p class="sheet-desc" id="sheetDesc">
+                Learn how to preserve entrepreneurial agility and overcome internal bottlenecks as your business scales. Discover key strategies to close the action gap and maintain a founder's mindset through rapid growth.
+              </p>
+
+              <!-- Metadata List: Speaker, Discipline, Target Outcome -->
+              <div class="sheet-meta-list">
+                <div class="sheet-meta-item">
+                  <span class="sheet-meta-label">Speaker:</span>
+                  <span class="sheet-meta-val" id="videoModalSpeaker">Chiqui Escareal-Go</span>
+                </div>
+                <div class="sheet-meta-item">
+                  <span class="sheet-meta-label">Discipline:</span>
+                  <span class="sheet-meta-val" id="sheetDisciplineName">Entrepreneurship Discipline</span>
+                </div>
+                <div class="sheet-meta-item">
+                  <span class="sheet-meta-label">Target outcome:</span>
+                  <span class="sheet-meta-val" id="sheetTargetOutcome">Grow ventures</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Quick Action Icon Bar (Set Reminder, My List, Rate, Share) -->
+            <div class="sheet-actions-bar">
+              <button class="sheet-action-btn" id="modalReminderBtn" aria-label="Set Reminder">
+                <span class="sheet-act-icon">🔔</span>
+                <span class="sheet-act-label">Set Reminder</span>
+              </button>
+              <button class="sheet-action-btn" id="modalListAction" aria-label="My List">
+                <span class="sheet-act-icon">＋</span>
+                <span class="sheet-act-label">My List</span>
+              </button>
+              <button class="sheet-action-btn" id="modalRateBtn" aria-label="Rate">
+                <span class="sheet-act-icon">👍</span>
+                <span class="sheet-act-label">Rate</span>
+              </button>
+              <button class="sheet-action-btn" id="modalShareAction" aria-label="Share">
+                <span class="sheet-act-icon">↗</span>
+                <span class="sheet-act-label">Share</span>
+              </button>
+            </div>
+
+            <!-- Tabs: Related Videos | Trailer & More -->
+            <div class="sheet-tabs-nav">
+              <button class="sheet-tab-link active" data-tab="related" id="tabRelatedBtn">Related Videos</button>
+              <button class="sheet-tab-link" data-tab="trailer" id="tabTrailerBtn">Trailer &amp; More</button>
+            </div>
+
+            <!-- Related Videos / Key Takeaways Cards (1, 3, !) -->
+            <div class="sheet-modules-list" id="sheetModulesList">
+              <div class="sheet-module-card">
+                <div class="sheet-module-num">1</div>
+                <div class="sheet-module-content">
+                  <h5>The growth paradox</h5>
+                  <p>The bigger the business gets, the harder it is to move fast.</p>
+                </div>
+              </div>
+              <div class="sheet-module-card">
+                <div class="sheet-module-num">3</div>
+                <div class="sheet-module-content">
+                  <h5>Three crises of scaling</h5>
+                  <p>The points where growth stalls decisive action.</p>
+                </div>
+              </div>
+              <div class="sheet-module-card">
+                <div class="sheet-module-num">!</div>
+                <div class="sheet-module-content">
+                  <h5>Bureaucracy and analysis paralysis</h5>
+                  <p>How both stifle organizational agility.</p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Landscape Fullscreen Cinema Player (Mobile Only - Matching Image 2) -->
+      <div class="landscape-player-modal" id="landscapePlayerModal" aria-hidden="true">
+        <div class="ls-player-container" id="lsPlayerContainer">
+          
+          <!-- Dedicated Landscape Video Player -->
+          <video id="landscapeVideo" playsinline preload="metadata"></video>
+
+          <!-- Interactive UI Overlay Controls (Matching Image 2) -->
+          <div class="ls-controls-overlay" id="lsControlsOverlay">
+            
+            <!-- Top Bar: Back, Title, Reaction Badges, Screen Lock -->
+            <div class="ls-top-bar">
+              <button class="ls-back-btn" id="lsBackBtn" aria-label="Exit landscape mode">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="19" y1="12" x2="5" y2="12"></line>
+                  <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+              </button>
+
+              <div class="ls-title-group">
+                <span class="ls-discipline-name" id="lsDisciplineName">Business Model Discipline</span>
+                <h4 class="ls-video-title" id="lsVideoTitle">Title for Video</h4>
+              </div>
+
+              <!-- Center Rating Reactions (Thumbs Down, Thumbs Up, Double Thumbs Up) -->
+              <div class="ls-reaction-group">
+                <button class="ls-react-btn" id="lsDislikeBtn" aria-label="Not for me">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h3a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-3"></path>
+                  </svg>
+                </button>
+                <button class="ls-react-btn" id="lsLikeBtn" aria-label="I like this">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path>
+                  </svg>
+                </button>
+                <button class="ls-react-btn" id="lsLoveBtn" aria-label="Love this">
+                  <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path>
+                  </svg>
+                </button>
+              </div>
+
+              <!-- Screen Lock Button -->
+              <button class="ls-lock-btn" id="lsLockBtn" aria-label="Lock controls">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+              </button>
+            </div>
+
+            <!-- Left Side: Brightness / Volume Slider with Sun Icon -->
+            <div class="ls-brightness-slider" id="lsBrightnessControl">
+              <span class="ls-sun-icon">☼</span>
+              <div class="ls-slider-track">
+                <div class="ls-slider-fill" id="lsBrightnessFill" style="height: 65%;"></div>
+              </div>
+            </div>
+
+            <!-- Center Controls: Rewind 10, Play/Pause, Forward 10 -->
+            <div class="ls-center-controls">
+              <button class="ls-seek-btn" id="lsRewindBtn" aria-label="Rewind 10 seconds">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M1 4v6h6"></path>
+                  <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+                </svg>
+                <span class="ls-seek-num">10</span>
+              </button>
+
+              <button class="ls-main-play-btn" id="lsPlayPauseBtn" aria-label="Play or pause">
+                <svg class="ls-play-icon-svg" viewBox="0 0 24 24" fill="currentColor">
+                  <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                </svg>
+                <svg class="ls-pause-icon-svg" viewBox="0 0 24 24" fill="currentColor">
+                  <rect x="6" y="4" width="4" height="16" rx="1"></rect>
+                  <rect x="14" y="4" width="4" height="16" rx="1"></rect>
+                </svg>
+              </button>
+
+              <button class="ls-seek-btn" id="lsForwardBtn" aria-label="Forward 10 seconds">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M23 4v6h-6"></path>
+                  <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+                </svg>
+                <span class="ls-seek-num">10</span>
+              </button>
+            </div>
+
+            <!-- Bottom Progress Bar & Scrubber -->
+            <div class="ls-bottom-section">
+              <div class="ls-timeline-row">
+                <div class="ls-scrubber-track" id="lsScrubberTrack">
+                  <div class="ls-scrubber-fill" id="lsScrubberFill"></div>
+                  <div class="ls-scrubber-dot" id="lsScrubberDot"></div>
+                </div>
+                <span class="ls-time-display" id="lsTimeDisplay">0:00 / 0:00</span>
+              </div>
+
+              <!-- Bottom Action Items Row (Speed, Related Videos, Audio & Subtitles, Next Video) -->
+              <div class="ls-bottom-controls-row">
+                <button class="ls-bottom-action-btn" id="lsSpeedBtn">
+                  <span class="ls-opt-symbol">⏲</span>
+                  <span id="lsSpeedText">Speed (1x)</span>
+                </button>
+                <button class="ls-bottom-action-btn" id="lsRelatedBtn">
+                  <span class="ls-opt-symbol">☵</span>
+                  <span>Related Videos</span>
+                </button>
+                <button class="ls-bottom-action-btn" id="lsSubtitlesBtn">
+                  <span class="ls-opt-symbol">💬</span>
+                  <span>Audio &amp; Subtitles</span>
+                </button>
+                <button class="ls-bottom-action-btn" id="lsNextVideoBtn">
+                  <span>Next Video</span>
+                  <span class="ls-next-symbol">▷|</span>
+                </button>
+              </div>
+            </div>
+
           </div>
         </div>
       </div>
