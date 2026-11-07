@@ -235,12 +235,7 @@
     });
   }
 
-  const profileBtn = document.getElementById("profileBtn");
-  if (profileBtn) {
-    profileBtn.addEventListener("click", function () {
-      showToast("Signed in as Mansmith Executive");
-    });
-  }
+
 
   document.querySelectorAll(".nav-tab").forEach(function (tab) {
     tab.addEventListener("click", function () {

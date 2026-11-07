@@ -80,7 +80,7 @@ window.ContinuumMobile = (function () {
     // 2. User avatar menu
     const userMenuPanel = document.getElementById("userMenuPanel");
     if (userMenuPanel && (userMenuPanel.classList.contains("open") || userMenuPanel.getAttribute("aria-hidden") === "false")) {
-      const avatarBtn = document.getElementById("userMenuBtn");
+      const avatarBtn = document.getElementById("profileBtn") || document.getElementById("userMenuBtn");
       if (avatarBtn) {
         avatarBtn.click();
         handled = true;

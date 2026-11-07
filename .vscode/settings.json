@@ -1,0 +1,13 @@
+{
+  "files.exclude": {
+    "**/.git": true,
+    "**/.DS_Store": true,
+    "**/www": true,
+    "**/node_modules": true
+  },
+  "search.exclude": {
+    "**/www": true,
+    "**/node_modules": true
+  }
+}
+

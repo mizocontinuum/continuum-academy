@@ -5,9 +5,10 @@
   "private": true,
   "scripts": {
     "serve": "python3 .vscode/serve.py 8080",
-    "cap:add:ios": "cap add ios",
-    "cap:add:android": "cap add android",
-    "cap:sync": "cap sync",
+    "build:mobile": "python3 .vscode/build_mobile.py",
+    "cap:add:ios": "npm run build:mobile && cap add ios",
+    "cap:add:android": "npm run build:mobile && cap add android",
+    "cap:sync": "npm run build:mobile && cap sync",
     "cap:open:ios": "cap open ios",
     "cap:open:android": "cap open android"
   },

@@ -124,10 +124,7 @@
       showToast("No new notifications right now");
     });
 
-  document.getElementById("profileBtn") &&
-    document.getElementById("profileBtn").addEventListener("click", function () {
-      showToast("Signed in as Mansmith Executive");
-    });
+
 
   document.querySelectorAll(".nav-tab").forEach(function (tab) {
     tab.addEventListener("click", function () {

@@ -10,7 +10,7 @@
    with Range requests for seeking, and in production they arrive from a signed
    streaming URL instead of this origin. */
 
-const VERSION = "continuum-v10";
+const VERSION = "continuum-v11";
 
 const SHELL = [
   "./",
@@ -120,16 +120,16 @@ async function networkFirst(request) {
     if (response && response.ok) cache.put(request, response.clone());
     return response;
   } catch (error) {
-    const cached = await cache.match(request);
+    const cached = (await cache.match(request)) || (await cache.match(request, { ignoreSearch: true }));
     if (cached) return cached;
     /* Offline and never visited: the sign-in screen is the safe landing. */
-    return (await cache.match("./login/")) || Response.error();
+    return (await cache.match("./login/")) || (await cache.match("./login/", { ignoreSearch: true })) || Response.error();
   }
 }
 
 async function staleWhileRevalidate(request) {
   const cache = await caches.open(VERSION);
-  const cached = await cache.match(request);
+  const cached = (await cache.match(request)) || (await cache.match(request, { ignoreSearch: true }));
 
   const network = fetch(request)
     .then((response) => {
