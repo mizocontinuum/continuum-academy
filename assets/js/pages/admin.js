@@ -317,7 +317,7 @@
       speaker: document.getElementById("videoSpeaker")?.value,
       minutes: document.getElementById("videoMinutes")?.value,
       tag: document.getElementById("videoTag")?.value,
-      art: document.getElementById("videoArt")?.value || "bg-slate-b",
+      art: "bg-slate-b",
       image: thumbData
     });
     if (result.error) return showToast(result.error);
